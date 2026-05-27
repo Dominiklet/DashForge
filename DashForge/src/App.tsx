@@ -3,7 +3,6 @@ import { BsBarChartLine } from "react-icons/bs";
 import titleData from "./templates/segments/1titles.json";
 import { useState, useRef, useEffect } from "react";
 import { BsFullscreen, BsFullscreenExit } from "react-icons/bs";
-import TestChart from "./components/TestChart";
 interface Titles {
   name: string;
   explorerPath: string;
@@ -83,7 +82,6 @@ function App() {
 
         <div style={{ flex: 1, position: "relative" }}>
           {/* widgets here */}
-          <TestChart />
         </div>
       </div>
     </>
