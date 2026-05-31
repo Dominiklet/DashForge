@@ -1,0 +1,70 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      - name: Linter ausführen
+        run: npm run lint
+
+      - name: Projekt bauen
+        run: npm run build
+
+      - name: Tests durchlaufen lassen
+        run: npm run test
+
+  deploy:
+    needs: ci
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Bauen für Produktion
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build-Artefakt hochladen
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+      - name: Auf GitHub Pages deployen
+        id: deployment
+        uses: actions/deploy-pages@v4
