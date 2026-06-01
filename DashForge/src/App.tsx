@@ -44,47 +44,41 @@ function App() {
   }, []);
 
   return (
-    <>
-      <div ref={containerRef} className="fullscreen">
-        <div style={{ color: "#6b6375", textAlign: "left" }}>
-          {explorerPath}
+    <div ref={containerRef} className="fullscreen">
+      <div style={{ color: "#6b6375", textAlign: "left" }}>{explorerPath}</div>
+
+      <hr />
+
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <BsBarChartLine size={16} color="#aa3bff" />
+          <span style={{ fontWeight: 600, color: "#08060d" }}>{name}</span>
         </div>
 
-        <hr />
-
-        <div
+        <button
+          onClick={toggleFullscreen}
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            color: "#6b6375",
+            marginTop: 2,
           }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <BsBarChartLine size={16} color="#aa3bff" />
-            <span style={{ fontWeight: 600, color: "#08060d" }}>{name}</span>
-          </div>
-
-          <button
-            onClick={toggleFullscreen}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "#6b6375",
-              marginTop: 2,
-            }}>
-            {isFullscreen ? (
-              <BsFullscreenExit size={16} />
-            ) : (
-              <BsFullscreen size={16} />
-            )}
-          </button>
-        </div>
-
-        <div style={{ flex: 1, position: "relative" }}>
-          {/* widgets here */}
-        </div>
+          {isFullscreen ? (
+            <BsFullscreenExit size={16} />
+          ) : (
+            <BsFullscreen size={16} />
+          )}
+        </button>
       </div>
-    </>
+
+      <div style={{ flex: 1, position: "relative" }}>{/* widgets here */}</div>
+    </div>
   );
 }
 
