@@ -1,6 +1,6 @@
 import "./App.css";
 import { BsBarChartLine } from "react-icons/bs";
-import titleData from "./templates/segments/1titles.json";
+import titleData from "./templates/dashboard_template.json";
 import { useState, useRef, useEffect } from "react";
 import { BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 interface Titles {
@@ -9,7 +9,7 @@ interface Titles {
 }
 
 function useDashboardMeta(): Titles {
-  const entry = titleData[0];
+  const entry = titleData;
   return {
     name: entry.name,
     explorerPath: entry.nodeInformation.explorerPath,
