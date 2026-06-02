@@ -1,0 +1,414 @@
+{
+  "id": "bbf18666-690e-4f08-a58a-286b495dd42d",
+  "name": "Windkraftwerk 1",
+  "createdAt": "2026-05-08T09:55:22.508920Z",
+  "updatedAt": "2026-05-08T10:18:20.741945Z",
+  "description": null,
+  "isEditable": true,
+  "isDeletable": true,
+  "backgroundColor": null,
+  "marginBetweenPanels": null,
+  "timeRange": {
+    "start": "now-2d",
+    "end": "now",
+    "timeZone": "Europe/Berlin"
+  },
+  "refreshInterval": 300,
+  "showDashboardBarInKioskMode": false,
+  "panels": [
+    {
+      "id": "0dba108f-d76a-41fa-8841-be4c940ce029",
+      "panelType": "PLOT",
+      "panelStyle": {
+        "marginRight": null,
+        "marginLeft": null,
+        "marginBottom": null,
+        "marginTop": null,
+        "backgroundColor": null,
+        "textColor": null,
+        "selfManagedMargins": null
+      },
+      "panelConfiguration": [
+        {
+          "id": "b17f0721-4167-427b-b8e8-53c415b8a073",
+          "axisConfig": {
+            "useUnitOnAxis": true,
+            "useDefaultAxis": false
+          },
+          "lineConfig": {
+            "gap": -1,
+            "color": "#3366cc",
+            "lineSize": 1,
+            "lineType": "solid",
+            "linePointType": "none",
+            "lineInterpolation": "linear"
+          },
+          "legendConfig": {
+            "show": true,
+            "position": "TOP",
+            "showUnit": true,
+            "adjustment": "CENTER"
+          },
+          "commentsConfig": {
+            "isCommentsEnabled": false
+          }
+        },
+        {
+          "id": "68efb8fd-fa23-4978-998c-3c1cc7b4c60c",
+          "axisConfig": {
+            "useUnitOnAxis": true,
+            "useDefaultAxis": false
+          },
+          "lineConfig": {
+            "gap": -1,
+            "color": "#ff9901",
+            "lineSize": 1,
+            "lineType": "solid",
+            "linePointType": "none",
+            "lineInterpolation": "linear"
+          },
+          "legendConfig": {
+            "show": true,
+            "position": "TOP",
+            "showUnit": true,
+            "adjustment": "CENTER"
+          },
+          "commentsConfig": {
+            "isCommentsEnabled": false
+          }
+        }
+      ],
+      "timeRange": null,
+      "title": "Momentane Wind",
+      "description": null,
+      "showPanelBar": false,
+      "showDescriptionAsTooltip": false,
+      "layoutPos": {
+        "w": 7,
+        "h": 8,
+        "x": 0,
+        "y": 0
+      },
+      "refreshWithDashboard": null,
+      "dataSourceOutputs": {
+        "68efb8fd-fa23-4978-998c-3c1cc7b4c60c": {
+          "outputId": "68efb8fd-fa23-4978-998c-3c1cc7b4c60c",
+          "referenceId": "86616ea1-5eb4-4bc0-a7a0-60da43478f0c",
+          "outputType": "TIMESERIES",
+          "nodeType": "SIGNAL",
+          "isReadable": true
+        },
+        "b17f0721-4167-427b-b8e8-53c415b8a073": {
+          "outputId": "b17f0721-4167-427b-b8e8-53c415b8a073",
+          "referenceId": "5617b568-1624-400b-85fc-0a3e5d157ecb",
+          "outputType": "TIMESERIES",
+          "nodeType": "SIGNAL",
+          "isReadable": true
+        }
+      }
+    },
+    {
+      "id": "bf108c3b-4bb3-4e94-a5fb-d5f595c2ce97",
+      "panelType": "IMAGE",
+      "panelStyle": {
+        "marginRight": null,
+        "marginLeft": null,
+        "marginBottom": null,
+        "marginTop": null,
+        "backgroundColor": null,
+        "textColor": null,
+        "selfManagedMargins": null
+      },
+      "panelConfiguration": {
+        "alignment": "SCALED_TO_PANEL_SIZE",
+        "originalImageName": "Gemini_Generated.png"
+      },
+      "timeRange": null,
+      "title": "Neues Bild",
+      "description": null,
+      "showPanelBar": false,
+      "showDescriptionAsTooltip": false,
+      "layoutPos": {
+        "w": 6,
+        "h": 4,
+        "x": 7,
+        "y": 4
+      },
+      "refreshWithDashboard": null,
+      "dataSourceOutputs": {}
+    },
+    {
+      "id": "4e52e77b-31e5-42f4-b4fb-83b349a659e7",
+      "panelType": "PLOT",
+      "panelStyle": {
+        "marginRight": null,
+        "marginLeft": null,
+        "marginBottom": null,
+        "marginTop": null,
+        "backgroundColor": null,
+        "textColor": null,
+        "selfManagedMargins": null
+      },
+      "panelConfiguration": [
+        {
+          "id": "8d40325d-41ff-4806-8bdc-deecbef9d523",
+          "axisConfig": {
+            "useUnitOnAxis": true,
+            "useDefaultAxis": true
+          },
+          "lineConfig": {
+            "gap": -1,
+            "color": "#e4e13e",
+            "lineSize": 1,
+            "lineType": "solid",
+            "linePointType": "none",
+            "lineInterpolation": "linear"
+          },
+          "legendConfig": {
+            "show": false,
+            "position": "RIGHT",
+            "showUnit": true,
+            "adjustment": "START"
+          },
+          "commentsConfig": {
+            "isCommentsEnabled": false
+          }
+        }
+      ],
+      "timeRange": null,
+      "title": "Strompreis",
+      "description": null,
+      "showPanelBar": true,
+      "showDescriptionAsTooltip": false,
+      "layoutPos": {
+        "w": 7,
+        "h": 4,
+        "x": 0,
+        "y": 8
+      },
+      "refreshWithDashboard": null,
+      "dataSourceOutputs": {
+        "8d40325d-41ff-4806-8bdc-deecbef9d523": {
+          "outputId": "8d40325d-41ff-4806-8bdc-deecbef9d523",
+          "referenceId": "7f8ea871-3533-471c-be73-faf067da9155",
+          "outputType": "TIMESERIES",
+          "nodeType": "SIGNAL",
+          "isReadable": true
+        }
+      }
+    },
+    {
+      "id": "2d95cb01-5fa4-4c68-b3ee-9aa70199079c",
+      "panelType": "KPI",
+      "panelStyle": {
+        "marginRight": null,
+        "marginLeft": null,
+        "marginBottom": null,
+        "marginTop": null,
+        "backgroundColor": null,
+        "textColor": null,
+        "selfManagedMargins": null
+      },
+      "panelConfiguration": {
+        "lowerLimit": {
+          "strict": false,
+          "limitBreakText": "",
+          "limitTextColor": "#28282d",
+          "hideSensorValue": false,
+          "limitBackgroundColor": "#f8f8f8"
+        },
+        "upperLimit": {
+          "strict": false,
+          "limitBreakText": "",
+          "limitTextColor": "#28282d",
+          "hideSensorValue": false,
+          "limitBackgroundColor": "#f8f8f8"
+        },
+        "defaultText": "Letzter Preis",
+        "kpiCalcType": "MEDIAN",
+        "fontSizeText": 12,
+        "fontSizeValue": 36,
+        "fractionDigits": 4,
+        "useLatestValue": false,
+        "hideSensorValue": false,
+        "isManualFormatting": false,
+        "defaultTextPosition": "top"
+      },
+      "timeRange": null,
+      "title": "Neues KPI",
+      "description": null,
+      "showPanelBar": true,
+      "showDescriptionAsTooltip": false,
+      "layoutPos": {
+        "w": 6,
+        "h": 4,
+        "x": 7,
+        "y": 8
+      },
+      "refreshWithDashboard": null,
+      "dataSourceOutputs": {
+        "593a9943-2484-4b62-bde2-05c9ced253bb": {
+          "outputId": "593a9943-2484-4b62-bde2-05c9ced253bb",
+          "referenceId": "7f8ea871-3533-471c-be73-faf067da9155",
+          "outputType": "SINGLE_VALUE",
+          "nodeType": "SIGNAL",
+          "isReadable": true
+        }
+      }
+    },
+    {
+      "id": "47d7317c-f807-4888-a1c5-33650b10041d",
+      "panelType": "PLOT",
+      "panelStyle": {
+        "marginRight": null,
+        "marginLeft": null,
+        "marginBottom": null,
+        "marginTop": null,
+        "backgroundColor": "#e0fcff",
+        "textColor": null,
+        "selfManagedMargins": null
+      },
+      "panelConfiguration": [
+        {
+          "id": "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12",
+          "lineConfig": {
+            "lineSize": 1,
+            "lineInterpolation": "linear",
+            "lineType": "solid",
+            "color": "#3366cc",
+            "gap": -1,
+            "linePointType": "point"
+          },
+          "axisConfig": {
+            "useDefaultAxis": false,
+            "useUnitOnAxis": true
+          },
+          "legendConfig": {
+            "position": "RIGHT",
+            "adjustment": "START",
+            "show": false,
+            "showUnit": true
+          },
+          "commentsConfig": {
+            "isCommentsEnabled": false
+          }
+        }
+      ],
+      "timeRange": null,
+      "title": "Windgeschwinikeitsprognose",
+      "description": null,
+      "showPanelBar": true,
+      "showDescriptionAsTooltip": false,
+      "layoutPos": {
+        "w": 11,
+        "h": 6,
+        "x": 13,
+        "y": 0
+      },
+      "refreshWithDashboard": null,
+      "dataSourceOutputs": {
+        "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12": {
+          "outputId": "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12",
+          "referenceId": "bba7e563-c651-4270-82dc-52e8c1fecb07",
+          "outputType": "TIMESERIES",
+          "nodeType": "SIGNAL",
+          "isReadable": true
+        }
+      }
+    },
+    {
+      "id": "dc5a14ba-7529-4a00-968d-65218f1434d4",
+      "panelType": "PLOT",
+      "panelStyle": {
+        "marginRight": null,
+        "marginLeft": null,
+        "marginBottom": null,
+        "marginTop": null,
+        "backgroundColor": "#edffc3",
+        "textColor": null,
+        "selfManagedMargins": null
+      },
+      "panelConfiguration": [
+        {
+          "id": "ec088be1-e23a-4c70-b8c7-d9fe62359db0",
+          "lineConfig": {
+            "lineSize": 1,
+            "lineInterpolation": "linear",
+            "lineType": "solid",
+            "color": "#be7200",
+            "gap": -1,
+            "linePointType": "none"
+          },
+          "axisConfig": {
+            "useDefaultAxis": false,
+            "useUnitOnAxis": true
+          },
+          "legendConfig": {
+            "position": "RIGHT",
+            "adjustment": "START",
+            "show": false,
+            "showUnit": true
+          },
+          "commentsConfig": {
+            "isCommentsEnabled": false
+          }
+        }
+      ],
+      "timeRange": null,
+      "title": "Netzspannung",
+      "description": null,
+      "showPanelBar": true,
+      "showDescriptionAsTooltip": false,
+      "layoutPos": {
+        "w": 11,
+        "h": 6,
+        "x": 13,
+        "y": 6
+      },
+      "refreshWithDashboard": null,
+      "dataSourceOutputs": {
+        "ec088be1-e23a-4c70-b8c7-d9fe62359db0": {
+          "outputId": "ec088be1-e23a-4c70-b8c7-d9fe62359db0",
+          "referenceId": "8d8d455e-0a8e-4dcb-b3af-2ef4b0587310",
+          "outputType": "TIMESERIES",
+          "nodeType": "SIGNAL",
+          "isReadable": true
+        }
+      }
+    },
+    {
+      "id": "9d391bad-0fe7-4294-b025-f37e5a272a4c",
+      "panelType": "TEXT",
+      "panelStyle": {
+        "marginRight": null,
+        "marginLeft": null,
+        "marginBottom": null,
+        "marginTop": null,
+        "backgroundColor": null,
+        "textColor": null,
+        "selfManagedMargins": null
+      },
+      "panelConfiguration": {
+        "code": "<center>\n\n# Dashboard Windkraftwerk 1\n\n## Ein technisches Überwachungs-Dashboard zur Analyse von Windgeschwindigkeit,  Netzspannung und aktuellen Strompreisen für erneuerbare Energien.\n\n</center>"
+      },
+      "timeRange": null,
+      "title": "Neues Markdown",
+      "description": null,
+      "showPanelBar": true,
+      "showDescriptionAsTooltip": false,
+      "layoutPos": {
+        "w": 6,
+        "h": 4,
+        "x": 7,
+        "y": 0
+      },
+      "refreshWithDashboard": null,
+      "dataSourceOutputs": {}
+    }
+  ],
+  "nodeInformation": {
+    "nodeId": "00275b87-1994-4e50-bad9-5fade322f75e",
+    "parentId": "4574dafb-39eb-4090-8311-ca49be3e0e71",
+    "explorerPath": "Tenant A auf DEV/Y Data/Windkraftwerk 1"
+  }
+}
