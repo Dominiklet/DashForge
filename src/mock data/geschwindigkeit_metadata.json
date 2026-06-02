@@ -1,0 +1,8 @@
+{
+  "name": "Geschwindigkeit",
+  "unit": "km/h",
+  "startDate": "2026-05-06T00:00:00.000000000Z",
+  "endDate": "2026-05-11T00:00:00.000000000Z",
+  "timeZone": "Europe/Berlin",
+  "annotations": []
+}
