@@ -1,34 +1,34 @@
 @font-face {
   font-family: "Open Sans";
-  src: url("./assets/font/OpenSans-Light.ttf") format("truetype");
+  src: url("assets/font/OpenSans-Light.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Open Sans";
-  src: url("./assets/font/OpenSans-Regular.ttf") format("truetype");
+  src: url("assets/font/OpenSans-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Open Sans";
-  src: url("./assets/font/OpenSans-Medium.ttf") format("truetype");
+  src: url("assets/font/OpenSans-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Open Sans";
-  src: url("./assets/font/OpenSans-SemiBold.ttf") format("truetype");
+  src: url("assets/font/OpenSans-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Open Sans";
-  src: url("./assets/font/OpenSans-Bold.ttf") format("truetype");
+  src: url("assets/font/OpenSans-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
@@ -42,9 +42,8 @@
   --accent: #aa3bff;
 
   font-family: "Open Sans", Helvetica, sans-serif;
-  font: 1rem;
+  font-size: 1rem;
   letter-spacing: 0.2px;
-  /* color-scheme: light dark; */
   color: var(--text);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
@@ -53,19 +52,6 @@
     font-size: 1rem;
   }
 }
-
-/*
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --accent: #c084fc;
-  }
-}
-*/
-
 #root {
   width: 2100px;
   max-width: 100%;
