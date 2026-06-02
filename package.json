@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "test": "vitest run"
+    "dev": "DashForge/node_modules/.bin/vite",
+    "build": "DashForge/node_modules/.bin/tsc -b && vite build",
+    "lint": "DashForge/node_modules/.bin/eslint .",
+    "preview": "DashForge/node_modules/.bin/vite preview",
+    "test": "DashForge/node_modules/.bin/vitest run"
   },
   "dependencies": {
     "react": "^19.2.6",
