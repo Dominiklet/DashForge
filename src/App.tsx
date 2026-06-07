@@ -1,8 +1,8 @@
 import "./App.css";
-import { BsBarChartLine } from "react-icons/bs";
+import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 import titleData from "./templates/dashboard_template.json";
 import { useState, useRef, useEffect } from "react";
-import { BsFullscreen, BsFullscreenExit } from "react-icons/bs";
+import { WidgetBase } from "./components/WidgetBase";
 interface Titles {
   name: string;
   explorerPath: string;
@@ -77,7 +77,42 @@ function App() {
         </button>
       </div>
 
-      <div style={{ flex: 1, position: "relative" }}>{/* widgets here */}</div>
+      <div style={{ flex: 1, position: "relative", padding: 16, display: "grid", gap: 12 }}>
+        <WidgetBase
+          title="Momentane Wind"
+          panelStyle={{
+            backgroundColor: "#e0fcff",
+            backgroundOpacity: 60,
+            textColor: null,
+            marginTop: null,
+            marginRight: null,
+            marginBottom: null,
+            marginLeft: null,
+            selfManagedMargins: null,
+          }}
+          showPanelBar={true}
+          hasData={false}
+        >
+          <p>Chart-Inhalt kommt hier</p>
+        </WidgetBase>
+        <WidgetBase
+          title="Strompreis"
+          panelStyle={{
+            backgroundColor: "#edffc3",
+            backgroundOpacity: 80,
+            textColor: null,
+            marginTop: null,
+            marginRight: null,
+            marginBottom: null,
+            marginLeft: null,
+            selfManagedMargins: null,
+          }}
+          showPanelBar={true}
+          hasData={true}
+        >
+          <p style={{ padding: 16 }}>Chart-Inhalt kommt hier</p>
+        </WidgetBase>
+      </div>
     </div>
   );
 }
