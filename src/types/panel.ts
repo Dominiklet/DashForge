@@ -11,9 +11,20 @@ export interface PanelStyle {
   selfManagedMargins: boolean | null;
 }
 
+export const defaultPanelStyle: PanelStyle = {
+  backgroundColor: null,
+  backgroundOpacity: null,
+  textColor: null,
+  marginTop: null,
+  marginRight: null,
+  marginBottom: null,
+  marginLeft: null,
+  selfManagedMargins: null,
+};
+
 export interface WidgetBaseProps {
   title: string;
-  panelStyle: PanelStyle;
+  panelStyle?: Partial<PanelStyle>;
   showPanelBar: boolean;
   hasData: boolean;
   children: ReactNode;

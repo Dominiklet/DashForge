@@ -20,20 +20,20 @@ function WidgetNoData() {
 
 export function WidgetBase({
   title,
-  panelStyle,
+  panelStyle = {},
   showPanelBar,
   hasData,
   children,
 }: WidgetBaseProps) {
   const {
-    backgroundColor,
-    backgroundOpacity,
-    textColor,
-    marginTop,
-    marginRight,
-    marginBottom,
-    marginLeft,
-    selfManagedMargins,
+    backgroundColor = null,
+    backgroundOpacity = null,
+    textColor = null,
+    marginTop = null,
+    marginRight = null,
+    marginBottom = null,
+    marginLeft = null,
+    selfManagedMargins = false,
   } = panelStyle;
 
   const background =
@@ -42,7 +42,7 @@ export function WidgetBase({
       : backgroundColor ?? undefined;
 
   const margin =
-    selfManagedMargins !== true
+    !selfManagedMargins
       ? {
           marginTop: marginTop ?? undefined,
           marginRight: marginRight ?? undefined,

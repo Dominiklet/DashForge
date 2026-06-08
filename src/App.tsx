@@ -2,7 +2,7 @@ import "./App.css";
 import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 import titleData from "./templates/dashboard_template.json";
 import { useState, useRef, useEffect } from "react";
-import { WidgetBase } from "./components/WidgetBase";
+import { PlotWidget } from "./components/PlotWidget";
 interface Titles {
   name: string;
   explorerPath: string;
@@ -78,40 +78,22 @@ function App() {
       </div>
 
       <div style={{ flex: 1, position: "relative", padding: 16, display: "grid", gap: 12 }}>
-        <WidgetBase
+        <PlotWidget
           title="Momentane Wind"
-          panelStyle={{
-            backgroundColor: "#e0fcff",
-            backgroundOpacity: 60,
-            textColor: null,
-            marginTop: null,
-            marginRight: null,
-            marginBottom: null,
-            marginLeft: null,
-            selfManagedMargins: null,
-          }}
+          panelStyle={{ backgroundColor: "#e0fcff", backgroundOpacity: 60 }}
           showPanelBar={true}
           hasData={false}
         >
           <p>Chart-Inhalt kommt hier</p>
-        </WidgetBase>
-        <WidgetBase
+        </PlotWidget>
+        <PlotWidget
           title="Strompreis"
-          panelStyle={{
-            backgroundColor: "#edffc3",
-            backgroundOpacity: 80,
-            textColor: null,
-            marginTop: null,
-            marginRight: null,
-            marginBottom: null,
-            marginLeft: null,
-            selfManagedMargins: null,
-          }}
+          panelStyle={{ backgroundColor: "#edffc3", backgroundOpacity: 80 }}
           showPanelBar={true}
           hasData={true}
         >
           <p style={{ padding: 16 }}>Chart-Inhalt kommt hier</p>
-        </WidgetBase>
+        </PlotWidget>
       </div>
     </div>
   );
