@@ -4,17 +4,19 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "DashForge/node_modules/.bin/vite",
-    "build": "DashForge/node_modules/.bin/tsc -b && vite build",
-    "lint": "DashForge/node_modules/.bin/eslint .",
-    "preview": "DashForge/node_modules/.bin/vite preview",
-    "test": "DashForge/node_modules/.bin/vitest run"
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "test": "vitest run"
   },
   "dependencies": {
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-icons": "^5.6.0",
-    "recharts": "^3.8.1"
+    "react-markdown": "^10.1.0",
+    "recharts": "^3.8.1",
+    "rehype-raw": "^7.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
