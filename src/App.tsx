@@ -3,6 +3,8 @@ import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 import titleData from "./templates/dashboard_template.json";
 import { useState, useRef, useEffect } from "react";
 import { PlotWidget } from "./components/PlotWidget";
+import markdownData from "./mock data/markdown.json"; // nach mock data zusammenführung muss import angepasst werden
+import { TextWidget } from "./components/TextWidget";
 interface Titles {
   name: string;
   explorerPath: string;
@@ -77,23 +79,35 @@ function App() {
         </button>
       </div>
 
-      <div style={{ flex: 1, position: "relative", padding: 16, display: "grid", gap: 12 }}>
+      <div
+        style={{
+          flex: 1,
+          position: "relative",
+          padding: 16,
+          display: "grid",
+          gap: 12,
+        }}>
         <PlotWidget
           title="Momentane Wind"
           panelStyle={{ backgroundColor: "#e0fcff", backgroundOpacity: 60 }}
           showPanelBar={true}
-          hasData={false}
-        >
+          hasData={false}>
           <p>Chart-Inhalt kommt hier</p>
         </PlotWidget>
         <PlotWidget
           title="Strompreis"
           panelStyle={{ backgroundColor: "#edffc3", backgroundOpacity: 80 }}
           showPanelBar={true}
-          hasData={true}
-        >
+          hasData={true}>
           <p style={{ padding: 16 }}>Chart-Inhalt kommt hier</p>
         </PlotWidget>
+
+        <TextWidget
+          title={markdownData.title}
+          panelStyle={{ backgroundColor: "#f8f8f8" }}
+          showPanelBar={true}
+          code={markdownData.panelConfiguration.code}
+        />
       </div>
     </div>
   );
