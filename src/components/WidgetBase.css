@@ -37,3 +37,28 @@
   padding: 24px;
   font-size: 0.9rem;
 }
+/* ----- IMAGE ----- */
+.widget-image {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.image-scaled {
+  width: 97%;
+  height: 95%;
+  object-fit: cover;
+}
+
+.image-original {
+  max-width: 97%;
+  max-height: 95%;
+}
+
+.image-centered {
+  max-width: 97%;
+  max-height: 95%;
+  margin: auto;
+}
