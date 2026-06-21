@@ -1,9 +1,10 @@
 #!/bin/bash
 
-if [ -f /data/db.json ]; then
+if [ -f /data/testdata.json ]; then
     echo "Found testdata.json"
-    json-server -p 3000 /data/db.json
+    json-server --host 0.0.0.0 -p 3000 /data/testdata.json
 else
     echo "No testdata.json found"
+    ls -la /data
     exit 1
 fi
