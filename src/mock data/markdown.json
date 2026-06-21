@@ -1,4 +1,7 @@
 {
-  "title": "Dashboard Windkraftwerk 1",
-  "content": "**Dashboard Windkraftwerk 1**\n\nEin technisches Überwachungs-Dashboard zur Analyse von Windgeschwindigkeit, Netzspannung und aktuellen Strompreisen für erneuerbare Energien."
+  "panelType": "TEXT",
+  "title": "Neues Markdown",
+  "panelConfiguration": {
+    "code": "<center>\n\n<h1>Dashboard Windkraftwerk 1</h1>\n\n<p>Ein technisches Überwachungs-Dashboard zur Analyse von Windgeschwindigkeit, Netzspannung und aktuellen Strompreisen für erneuerbare Energien.</p>\n\n</center>"
+  }
 }
