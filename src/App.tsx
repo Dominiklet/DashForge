@@ -2,7 +2,10 @@ import "./App.css";
 import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 import titleData from "./templates/dashboard_template.json";
 import { useState, useRef, useEffect } from "react";
-import { PlotWidget } from "./components/PlotWidget";
+
+import strompreisData from "./mock data/strompreis.json";
+import strompreisMeta from "./mock data/strompreis_metadata.json";
+import { KpiWidget } from "./components/KpiWidget";
 import markdownData from "./mock data/markdown.json"; // nach mock data zusammenführung muss import angepasst werden
 import { TextWidget } from "./components/TextWidget";
 interface Titles {
@@ -87,26 +90,21 @@ function App() {
           display: "grid",
           gap: 12,
         }}>
-        <PlotWidget
-          title="Momentane Wind"
-          panelStyle={{ backgroundColor: "#e0fcff", backgroundOpacity: 60 }}
-          showPanelBar={true}
-          hasData={false}>
-          <p>Chart-Inhalt kommt hier</p>
-        </PlotWidget>
-        <PlotWidget
-          title="Strompreis"
-          panelStyle={{ backgroundColor: "#edffc3", backgroundOpacity: 80 }}
-          showPanelBar={true}
-          hasData={true}>
-          <p style={{ padding: 16 }}>Chart-Inhalt kommt hier</p>
-        </PlotWidget>
 
         <TextWidget
           title={markdownData.title}
           panelStyle={{ backgroundColor: "#f8f8f8" }}
           showPanelBar={true}
           code={markdownData.panelConfiguration.code}
+        />
+
+        <KpiWidget
+          title="Neues KPI"
+          panelStyle={{ backgroundColor: "#f8f8f8" }}
+          showPanelBar={true}
+          data={strompreisData}
+          unit={strompreisMeta.unit}
+          fractionDigits={4}
         />
       </div>
     </div>
