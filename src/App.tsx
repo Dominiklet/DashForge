@@ -98,12 +98,6 @@ function App() {
           code={markdownData.panelConfiguration.code}
         />
 
-        <TextWidget
-          title={markdownData.title}
-          panelStyle={{ backgroundColor: "#f8f8f8" }}
-          showPanelBar={true}
-          code={markdownData.panelConfiguration.code}
-        />
 
         <KpiWidget
           title="Neues KPI"
