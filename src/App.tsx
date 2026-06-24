@@ -1,6 +1,5 @@
 import "./App.css";
 import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
-import titleData from "./templates/dashboard_template.json";
 import { useState, useRef, useEffect } from "react";
 
 import strompreisData from "./mock data/strompreis.json";
@@ -8,21 +7,11 @@ import strompreisMeta from "./mock data/strompreis_metadata.json";
 import { KpiWidget } from "./components/KpiWidget";
 import markdownData from "./mock data/markdown.json"; // nach mock data zusammenführung muss import angepasst werden
 import { TextWidget } from "./components/TextWidget";
-interface Titles {
-  name: string;
-  explorerPath: string;
-}
+import type {Layout} from "./types/layout.ts";
 
-function useDashboardMeta(): Titles {
-  const entry = titleData;
-  return {
-    name: entry.name,
-    explorerPath: entry.nodeInformation.explorerPath,
-  };
-}
 
 function App() {
-  const { name, explorerPath } = useDashboardMeta();
+  const [layout, setLayout] = useState<Layout | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -37,6 +26,23 @@ function App() {
   };
 
   useEffect(() => {
+    const fetchLayout = async function (){
+      try {
+        const res = await fetch('http://localhost:3000/layoutJson');
+
+        if (!res.ok){
+          console.error('Daten konnten nicht erreicht werden!')
+        }
+
+        const layout: Layout = await res.json();
+
+        setLayout(layout)
+      }catch (error) {
+        console.error(`Unerwarteter Fehler aufgetreten! \n${error}`)
+      }
+    }
+    fetchLayout();
+
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
     };
@@ -50,7 +56,7 @@ function App() {
 
   return (
     <div ref={containerRef} className="fullscreen">
-      <div style={{ color: "#6b6375", textAlign: "left" }}>{explorerPath}</div>
+      <div style={{ color: "#6b6375", textAlign: "left" }}>{layout?.explorerpath}</div>
 
       <hr />
 
@@ -62,7 +68,7 @@ function App() {
         }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <BsBarChartLine size={16} color="#aa3bff" />
-          <span style={{ fontWeight: 600, color: "#08060d" }}>{name}</span>
+          <span style={{ fontWeight: 600, color: "#08060d" }}>{layout?.name}</span>
         </div>
 
         <button
