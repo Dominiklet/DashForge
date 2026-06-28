@@ -80,7 +80,7 @@
         }
       ],
       "timeRange": null,
-      "title": "Momentane Wind",
+      "title": "Momentane Windgeschwindigkeit",
       "description": null,
       "showPanelBar": false,
       "showDescriptionAsTooltip": false,
@@ -269,6 +269,7 @@
         "textColor": null,
         "selfManagedMargins": null
       },
+
       "panelConfiguration": [
         {
           "id": "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12",
@@ -2930,11 +2931,46 @@
       { "timestamp": 1778449626000, "value": 232.81 },
       { "timestamp": 1778450369000, "value": 231.16 }
     ]
-
-
-
-
-
-
+  },
+  "metadata": {
+    "einspeisung": {
+      "name": "Einspeisung",
+      "unit": "W",
+      "startDate": "2026-05-06T00:00:00.000000000Z",
+      "endDate": "2026-05-11T00:00:00.000000000Z",
+      "timeZone": "Europe/Berlin",
+      "annotations": []
+    },
+    "geschwindigkeit": {
+      "name": "Geschwindigkeit",
+      "unit": "km/h",
+      "startDate": "2026-05-06T00:00:00.000000000Z",
+      "endDate": "2026-05-11T00:00:00.000000000Z",
+      "timeZone": "Europe/Berlin",
+      "annotations": []
+    },
+    "netzspannung": {
+      "name": "Netzspannung",
+      "unit": "V",
+      "startDate": "2026-05-06T00:00:00.000000000Z",
+      "endDate": "2026-05-11T00:00:00.000000000Z",
+      "timeZone": "Europe/Berlin",
+      "annotations": []},
+    "strompreis": {
+      "name": "Strompreis",
+      "unit": "€/kWh",
+      "startDate": "2026-05-06T00:00:00.000000000Z",
+      "endDate": "2026-05-11T00:00:00.000000000Z",
+      "timeZone": "Europe/Berlin",
+      "annotations": []
+    },
+    "windgeschwindigkeitPrognose": {
+      "name": "Windgeschwindigkeitsprognose",
+      "unit": "km/h",
+      "startDate": "2026-05-06T00:00:00.000000000Z",
+      "endDate": "2026-05-11T00:00:00.000000000Z",
+      "timeZone": "Europe/Berlin",
+      "annotations": []
+    }
   }
   }
