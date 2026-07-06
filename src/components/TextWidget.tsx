@@ -3,20 +3,24 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import type { PanelStyle } from "../types/panel";
 import { WidgetBase } from "./WidgetBase";
+import { useDataSource } from "../context/useDataSource";
 
 interface TextWidgetProps {
   title: string;
   panelStyle?: Partial<PanelStyle>;
   showPanelBar: boolean;
-  code: string;
+  dataSourceId: string;
 }
 
 export function TextWidget({
   title,
   panelStyle,
   showPanelBar,
-  code,
+  dataSourceId,
 }: TextWidgetProps) {
+  const source = useDataSource(dataSourceId);
+  const code = source?.type === "markdown" ? source.code : "";
+
   return (
     <WidgetBase
       title={title}

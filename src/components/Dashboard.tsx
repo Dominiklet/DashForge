@@ -1,7 +1,6 @@
 import "../App.css";
 import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 import { useState, useRef, useEffect } from "react";
-import type { DataPoint } from "../types/panel";
 import { KpiWidget } from "./KpiWidget";
 import { TextWidget } from "./TextWidget";
 
@@ -9,20 +8,20 @@ interface DashboardProps {
   name: string;
   explorerPath: string;
   markdownTitle: string;
-  markdownCode: string;
+  markdownDataSourceId: string;
   kpiTitle: string;
-  kpiData: DataPoint[];
-  kpiUnit: string;
+  kpiDataSourceId: string;
+  kpiFractionDigits?: number;
 }
 
 export function Dashboard({
   name,
   explorerPath,
   markdownTitle,
-  markdownCode,
+  markdownDataSourceId,
   kpiTitle,
-  kpiData,
-  kpiUnit,
+  kpiDataSourceId,
+  kpiFractionDigits = 4,
 }: DashboardProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -91,16 +90,15 @@ export function Dashboard({
           title={markdownTitle}
           panelStyle={{ backgroundColor: "#f8f8f8" }}
           showPanelBar={true}
-          code={markdownCode}
+          dataSourceId={markdownDataSourceId}
         />
 
         <KpiWidget
           title={kpiTitle}
           panelStyle={{ backgroundColor: "#f8f8f8" }}
           showPanelBar={true}
-          data={kpiData}
-          unit={kpiUnit}
-          fractionDigits={4}
+          dataSourceId={kpiDataSourceId}
+          fractionDigits={kpiFractionDigits}
         />
       </div>
     </div>
