@@ -1,5 +1,10 @@
 import type { ReactNode } from "react";
 
+export interface DataPoint {
+  timestamp: number;
+  value: number;
+}
+
 export interface PanelStyle {
   backgroundColor: string | null;
   backgroundOpacity: number | null;

@@ -1,10 +1,5 @@
-import type { PanelStyle } from "../types/panel";
+import type { DataPoint, PanelStyle } from "../types/panel";
 import { WidgetBase } from "./WidgetBase";
-
-interface DataPoint {
-  timestamp: number;
-  value: number;
-}
 
 interface KpiWidgetProps {
   title: string;
