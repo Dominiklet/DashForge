@@ -80,7 +80,7 @@
         }
       ],
       "timeRange": null,
-      "title": "Momentane Wind",
+      "title": "Momentane Windgeschwindigkeit",
       "description": null,
       "showPanelBar": false,
       "showDescriptionAsTooltip": false,
@@ -269,6 +269,7 @@
         "textColor": null,
         "selfManagedMargins": null
       },
+
       "panelConfiguration": [
         {
           "id": "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12",
@@ -2930,5 +2931,52 @@
       { "timestamp": 1778449626000, "value": 232.81 },
       { "timestamp": 1778450369000, "value": 231.16 }
     ]
+  },
+  "metadata": {
+    "einspeisung": {
+      "widgetId": "0dba108f-d76a-41fa-8841-be4c940ce029",
+      "name": "Einspeisung",
+      "unit": "W",
+      "startDate": "2026-05-06T00:00:00.000000000Z",
+      "endDate": "2026-05-11T00:00:00.000000000Z",
+      "timeZone": "Europe/Berlin",
+      "annotations": []
+    },
+    "geschwindigkeit": {
+      "widgetId": "0dba108f-d76a-41fa-8841-be4c940ce029",
+      "name": "Geschwindigkeit",
+      "unit": "km/h",
+      "startDate": "2026-05-06T00:00:00.000000000Z",
+      "endDate": "2026-05-11T00:00:00.000000000Z",
+      "timeZone": "Europe/Berlin",
+      "annotations": []
+    },
+    "netzspannung": {
+      "widgetId": "dc5a14ba-7529-4a00-968d-65218f1434d4",
+      "name": "Netzspannung",
+      "unit": "V",
+      "startDate": "2026-05-06T00:00:00.000000000Z",
+      "endDate": "2026-05-11T00:00:00.000000000Z",
+      "timeZone": "Europe/Berlin",
+      "annotations": []
+    },
+    "strompreis": {
+      "widgetId": "4e52e77b-31e5-42f4-b4fb-83b349a659e7",
+      "name": "Strompreis",
+      "unit": "€/kWh",
+      "startDate": "2026-05-06T00:00:00.000000000Z",
+      "endDate": "2026-05-11T00:00:00.000000000Z",
+      "timeZone": "Europe/Berlin",
+      "annotations": []
+    },
+    "windgeschwindigkeitPrognose": {
+      "widgetId": "47d7317c-f807-4888-a1c5-33650b10041d",
+      "name": "Windgeschwindigkeitsprognose",
+      "unit": "km/h",
+      "startDate": "2026-05-06T00:00:00.000000000Z",
+      "endDate": "2026-05-11T00:00:00.000000000Z",
+      "timeZone": "Europe/Berlin",
+      "annotations": []
+    }
   }
   }
