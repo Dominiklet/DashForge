@@ -1,8 +1,6 @@
 import "../App.css";
 import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 import { useState, useRef, useEffect } from "react";
-import { KpiWidget } from "./KpiWidget";
-import { TextWidget } from "./TextWidget";
 
 interface DashboardProps {
   name: string;
@@ -86,20 +84,6 @@ export function Dashboard({
           display: "grid",
           gap: 12,
         }}>
-        <TextWidget
-          title={markdownTitle}
-          panelStyle={{ backgroundColor: "#f8f8f8" }}
-          showPanelBar={true}
-          dataSourceId={markdownDataSourceId}
-        />
-
-        <KpiWidget
-          title={kpiTitle}
-          panelStyle={{ backgroundColor: "#f8f8f8" }}
-          showPanelBar={true}
-          dataSourceId={kpiDataSourceId}
-          fractionDigits={kpiFractionDigits}
-        />
       </div>
     </div>
   );
