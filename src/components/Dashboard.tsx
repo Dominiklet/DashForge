@@ -1,29 +1,15 @@
 import "../App.css";
 import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 import { useState, useRef, useEffect } from "react";
-import { KpiWidget } from "./KpiWidget";
-import { TextWidget } from "./TextWidget";
+import type {Layout} from "../types/layout.ts";
 
-interface DashboardProps {
-  name: string;
-  explorerPath: string;
-  markdownTitle: string;
-  markdownDataSourceId: string;
-  kpiTitle: string;
-  kpiDataSourceId: string;
-  kpiFractionDigits?: number;
+export interface DashboardInterface {
+  layout:Layout;
 }
 
-export function Dashboard({
-  name,
-  explorerPath,
-  markdownTitle,
-  markdownDataSourceId,
-  kpiTitle,
-  kpiDataSourceId,
-  kpiFractionDigits = 4,
-}: DashboardProps) {
+export function Dashboard(dashboardInterface: DashboardInterface) {
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const layout = dashboardInterface.layout;
   const containerRef = useRef<HTMLDivElement>(null);
 
   const toggleFullscreen = async () => {
@@ -35,7 +21,6 @@ export function Dashboard({
       setIsFullscreen(false);
     }
   };
-
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -44,12 +29,11 @@ export function Dashboard({
     return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
+  if(!layout) return <div></div>
   return (
     <div ref={containerRef} className="fullscreen">
-      <div style={{ color: "#6b6375", textAlign: "left" }}>{explorerPath}</div>
-
+      <div style={{ color: "#6b6375", textAlign: "left" }}>{layout.explorerpath}</div>
       <hr />
-
       <div
         style={{
           display: "flex",
@@ -58,9 +42,8 @@ export function Dashboard({
         }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <BsBarChartLine size={16} color="#aa3bff" />
-          <span style={{ fontWeight: 600, color: "#08060d" }}>{name}</span>
+          <span style={{ fontWeight: 600, color: "#08060d" }}>{layout.name}</span>
         </div>
-
         <button
           onClick={toggleFullscreen}
           style={{
@@ -86,20 +69,7 @@ export function Dashboard({
           display: "grid",
           gap: 12,
         }}>
-        <TextWidget
-          title={markdownTitle}
-          panelStyle={{ backgroundColor: "#f8f8f8" }}
-          showPanelBar={true}
-          dataSourceId={markdownDataSourceId}
-        />
 
-        <KpiWidget
-          title={kpiTitle}
-          panelStyle={{ backgroundColor: "#f8f8f8" }}
-          showPanelBar={true}
-          dataSourceId={kpiDataSourceId}
-          fractionDigits={kpiFractionDigits}
-        />
       </div>
     </div>
   );

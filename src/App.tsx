@@ -1,11 +1,11 @@
 import "./App.css";
-import {BsBarChartLine ,BsFullscreen, BsFullscreenExit} from "react-icons/bs";
 import {useState, useRef, useEffect} from "react";
 import type {Layout} from "./types/layout.ts";
-import {DataContext} from "./Context/DataContext.tsx";
-import {MetaDataContext} from "./Context/MetaDataContext.tsx"
 import type {TimeData} from "./types/TimeData.ts";
 import type {MetaData} from "./types/MetaData.ts";
+import {Dashboard} from "./components/Dashboard.tsx";
+import {DataContext} from "./context/DataContext.tsx";
+import {MetaDataContext} from "./context/MetaDataContext.tsx";
 
 
 function App() {
@@ -44,11 +44,12 @@ function App() {
     fetchLayout();
   }, []);
 
+  if (!layout) return <div></div>
   return (
     <div ref={containerRef} className="fullscreen">
       <DataContext.Provider value={timeData}>
         <MetaDataContext.Provider value={metaData}>
-
+          <Dashboard layout={layout}></Dashboard>
         </MetaDataContext.Provider>
       </DataContext.Provider>
     </div>
