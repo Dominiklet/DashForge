@@ -415,8 +415,7 @@
   }
 },
   "timeData": {
-    "einspeisung":{
-      "id": "b17f0721-4167-427b-b8e8-53c415b8a073",
+    "b17f0721-4167-427b-b8e8-53c415b8a073":{
       "data": [
         { "timestamp": 1778054566000, "value": 230.63 },
         { "timestamp": 1778054663000, "value": 231.72 },
@@ -920,8 +919,7 @@
         { "timestamp": 1778449717000, "value": 235.86 }
       ]
     },
-    "geschwindigkeit": {
-      "id": "68efb8fd-fa23-4978-998c-3c1cc7b4c60c",
+    "68efb8fd-fa23-4978-998c-3c1cc7b4c60c": {
       "data": [
         { "timestamp": 1778055098000, "value": 230.82 },
         { "timestamp": 1778056956000, "value": 232.89 },
@@ -1424,18 +1422,15 @@
         { "timestamp": 1778448883000, "value": 235.4 }
       ]
     },
-    "kpi": {
-      "id": "593a9943-2484-4b62-bde2-05c9ced253bb",
+    "593a9943-2484-4b62-bde2-05c9ced253bb": {
       "value": 0.262294,
       "unit": "\u20ac/kWh"
     },
-    "markdown": {
-      "id": "9d391bad-0fe7-4294-b025-f37e5a272a4c",
+    "9d391bad-0fe7-4294-b025-f37e5a272a4c": {
       "title": "Dashboard Windkraftwerk 1",
       "content": "**Dashboard Windkraftwerk 1**\n\nEin technisches Überwachungs-Dashboard zur Analyse von Windgeschwindigkeit, Netzspannung und aktuellen Strompreisen für erneuerbare Energien."
     },
-    "netzspannung": {
-      "id": "ec088be1-e23a-4c70-b8c7-d9fe62359db0",
+    "ec088be1-e23a-4c70-b8c7-d9fe62359db0": {
       "data": [
         { "timestamp": 1778054706000, "value": 228.44 },
         { "timestamp": 1778054853000, "value": 232.77 },
@@ -1938,8 +1933,7 @@
         { "timestamp": 1778449677000, "value": 232.45 }
       ]
     },
-    "strompreis": {
-      "id": "8d40325d-41ff-4806-8bdc-deecbef9d523",
+    "8d40325d-41ff-4806-8bdc-deecbef9d523": {
       "data": [
       { "timestamp": 1778025647000, "value": 0.206092 },
       { "timestamp": 1778026569000, "value": 0.168069 },
@@ -2443,8 +2437,7 @@
       { "timestamp": 1778457181000, "value": 0.262294 }
     ]
     },
-    "windgeschwindigkeit_prognose": {
-      "id": "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12",
+    "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12": {
       "data": [
         {
           "timestamp": 1778054518000,
@@ -4450,8 +4443,7 @@
     }
   },
   "metadata": {
-    "einspeisung": {
-      "widgetId": "0dba108f-d76a-41fa-8841-be4c940ce029",
+    "b17f0721-4167-427b-b8e8-53c415b8a073": {
       "name": "Einspeisung",
       "unit": "W",
       "startDate": "2026-05-06T00:00:00.000000000Z",
@@ -4459,8 +4451,7 @@
       "timeZone": "Europe/Berlin",
       "annotations": []
     },
-    "geschwindigkeit": {
-      "widgetId": "0dba108f-d76a-41fa-8841-be4c940ce029",
+    "68efb8fd-fa23-4978-998c-3c1cc7b4c60c": {
       "name": "Geschwindigkeit",
       "unit": "km/h",
       "startDate": "2026-05-06T00:00:00.000000000Z",
@@ -4468,8 +4459,7 @@
       "timeZone": "Europe/Berlin",
       "annotations": []
     },
-    "netzspannung": {
-      "widgetId": "dc5a14ba-7529-4a00-968d-65218f1434d4",
+    "ec088be1-e23a-4c70-b8c7-d9fe62359db0": {
       "name": "Netzspannung",
       "unit": "V",
       "startDate": "2026-05-06T00:00:00.000000000Z",
@@ -4477,8 +4467,7 @@
       "timeZone": "Europe/Berlin",
       "annotations": []
     },
-    "strompreis": {
-      "widgetId": "4e52e77b-31e5-42f4-b4fb-83b349a659e7",
+    "8d40325d-41ff-4806-8bdc-deecbef9d523": {
       "name": "Strompreis",
       "unit": "€/kWh",
       "startDate": "2026-05-06T00:00:00.000000000Z",
@@ -4486,8 +4475,7 @@
       "timeZone": "Europe/Berlin",
       "annotations": []
     },
-    "windgeschwindigkeitPrognose": {
-      "widgetId": "47d7317c-f807-4888-a1c5-33650b10041d",
+    "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12": {
       "name": "Windgeschwindigkeitsprognose",
       "unit": "km/h",
       "startDate": "2026-05-06T00:00:00.000000000Z",
