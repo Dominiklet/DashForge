@@ -27,15 +27,15 @@ function getLatestValue(data: DataPoint[]): number | null {
 }
 
 export function KpiWidget({
-  title,
-  panelStyle,
-  showPanelBar,
-  data,
-  unit,
-  defaultText = "Letzter Preis",
-  fractionDigits = 2,
-  defaultTextPosition = "top",
-}: KpiWidgetProps) {
+                            title,
+                            panelStyle,
+                            showPanelBar,
+                            data,
+                            unit,
+                            defaultText = "Letzter Preis",
+                            fractionDigits = 2,
+                            defaultTextPosition = "top",
+                          }: KpiWidgetProps) {
   const latestValue = getLatestValue(data);
 
   return (
