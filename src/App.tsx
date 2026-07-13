@@ -104,8 +104,7 @@ function App() {
         <ImageWidget
           title="Windkraftwerk"
           panelStyle={{ backgroundColor: "#f8f8f8" }}
-          showPanelBar={false}
-          imageSrc="/DashForge/Windraeder.png"
+          imageName="Windraeder.png"
         />
       </div>
     </div>
