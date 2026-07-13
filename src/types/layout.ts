@@ -1,3 +1,5 @@
+import type {PanelConfiguration} from "./PanelConfigurationTypes/PanelConfiguration.ts";
+
 export interface Layout {
   name: string,
   backgroundColor: string,
@@ -28,10 +30,7 @@ export interface PanelStyle {
   selfManagedMargins: string;
 }
 
-export interface PanelConfiguration {
-  alignment: string;
-  originalImageName: string;
-}
+
 
 export interface LayoutPos {
   w: number;
