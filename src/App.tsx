@@ -1,17 +1,16 @@
 import "./App.css";
-import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
-import { useState, useRef, useEffect } from "react";
-
-import strompreisData from "./mock data/strompreis.json";
-import strompreisMeta from "./mock data/strompreis_metadata.json";
-import { KpiWidget } from "./components/KpiWidget";
-import markdownData from "./mock data/markdown.json"; // nach mock data zusammenführung muss import angepasst werden
-import { TextWidget } from "./components/TextWidget";
+import {BsBarChartLine ,BsFullscreen, BsFullscreenExit} from "react-icons/bs";
+import {useState, useRef, useEffect} from "react";
 import type {Layout} from "./types/layout.ts";
+import {DataContext} from "./Context/DataContext.tsx";
+import {MetaDataContext} from "./Context/MetaDataContext.tsx"
+import type {TimeData} from "./types/TimeData.ts";
 
 
 function App() {
   const [layout, setLayout] = useState<Layout | null>(null);
+  const [timeData, setTimeData] = useState<TimeData | null>(null);
+  const [metaData, setMetaData] = useState<MetaData | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -26,18 +25,29 @@ function App() {
   };
 
   useEffect(() => {
-    const fetchLayout = async function (){
+    const fetchLayout = async function () {
       try {
         const res = await fetch('http://localhost:3000/layoutJson');
-
-        if (!res.ok){
-          console.error('Daten konnten nicht erreicht werden!')
+        if (!res.ok) {
+          console.error('Layout konnte nicht erreicht werden!');
         }
-
         const layout: Layout = await res.json();
+        setLayout(layout);
 
-        setLayout(layout)
-      }catch (error) {
+        const resData: TimeData = await fetch('http://localhost:3000/timeData');
+        if (!resData.ok) {
+          console.error('Zeitreihendaten konnten nicht erreicht werden!');
+        }
+        const parsedTimeData: TimeData = await resData.json();
+        setTimeData(parsedTimeData);
+
+        const metaDataResponse: TimeData = await fetch('http://localhost:3000/metadata');
+        if (!metaDataResponse.ok) {
+          console.error('Metadaten konnten nicht erreicht werden!');
+        }
+        const parsedMetaData: TimeData = await metaDataResponse.json();
+        setMetaData(parsedMetaData);
+      } catch (error) {
         console.error(`Unerwarteter Fehler aufgetreten! \n${error}`)
       }
     }
@@ -56,64 +66,39 @@ function App() {
 
   return (
     <div ref={containerRef} className="fullscreen">
-      <div style={{ color: "#6b6375", textAlign: "left" }}>{layout?.explorerpath}</div>
+      <DataContext.Provider value={timeData}>
+        <MetaDataContext.Provider value={metaData}>
+          <div style={{color: "#6b6375", textAlign: "left"}}>{layout?.explorerpath}</div>
+          <hr/>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
+            <div style={{display: "flex", alignItems: "center", gap: 8}}>
+              <BsBarChartLine size={16} color="#aa3bff" />
+              <span style={{fontWeight: 600, color: "#08060d"}}>{layout?.name}</span>
+            </div>
 
-      <hr />
-
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <BsBarChartLine size={16} color="#aa3bff" />
-          <span style={{ fontWeight: 600, color: "#08060d" }}>{layout?.name}</span>
-        </div>
-
-        <button
-          onClick={toggleFullscreen}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "#6b6375",
-            marginTop: 2,
-          }}>
-          {isFullscreen ? (
-            <BsFullscreenExit size={16} />
-          ) : (
-            <BsFullscreen size={16} />
-          )}
-        </button>
-      </div>
-
-      <div
-        style={{
-          flex: 1,
-          position: "relative",
-          padding: 16,
-          display: "grid",
-          gap: 12,
-        }}>
-
-        <TextWidget
-          title={markdownData.title}
-          panelStyle={{ backgroundColor: "#f8f8f8" }}
-          showPanelBar={true}
-          code={markdownData.panelConfiguration.code}
-        />
-
-
-        <KpiWidget
-          title="Neues KPI"
-          panelStyle={{ backgroundColor: "#f8f8f8" }}
-          showPanelBar={true}
-          data={strompreisData}
-          unit={strompreisMeta.unit}
-          fractionDigits={4}
-        />
-      </div>
+            <button
+              onClick={toggleFullscreen}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: "#6b6375",
+                marginTop: 2,
+              }}>
+              {isFullscreen ? (
+                <BsFullscreenExit size={16}/>
+              ) : (
+                <BsFullscreen size={16}/>
+              )}
+            </button>
+          </div>
+        </MetaDataContext.Provider>
+      </DataContext.Provider>
     </div>
   );
 }

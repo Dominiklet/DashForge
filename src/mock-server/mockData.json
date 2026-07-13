@@ -416,6 +416,7 @@
 },
   "timeData": {
     "b17f0721-4167-427b-b8e8-53c415b8a073":{
+      "id":  "b17f0721-4167-427b-b8e8-53c415b8a073",
       "data": [
         { "timestamp": 1778054566000, "value": 230.63 },
         { "timestamp": 1778054663000, "value": 231.72 },
@@ -920,6 +921,7 @@
       ]
     },
     "68efb8fd-fa23-4978-998c-3c1cc7b4c60c": {
+      "id": "68efb8fd-fa23-4978-998c-3c1cc7b4c60c",
       "data": [
         { "timestamp": 1778055098000, "value": 230.82 },
         { "timestamp": 1778056956000, "value": 232.89 },
@@ -1423,14 +1425,17 @@
       ]
     },
     "593a9943-2484-4b62-bde2-05c9ced253bb": {
+      "id":"593a9943-2484-4b62-bde2-05c9ced253bb",
       "value": 0.262294,
       "unit": "\u20ac/kWh"
     },
     "9d391bad-0fe7-4294-b025-f37e5a272a4c": {
+      "id": "9d391bad-0fe7-4294-b025-f37e5a272a4c",
       "title": "Dashboard Windkraftwerk 1",
       "content": "**Dashboard Windkraftwerk 1**\n\nEin technisches Überwachungs-Dashboard zur Analyse von Windgeschwindigkeit, Netzspannung und aktuellen Strompreisen für erneuerbare Energien."
     },
     "ec088be1-e23a-4c70-b8c7-d9fe62359db0": {
+      "id": "ec088be1-e23a-4c70-b8c7-d9fe62359db0",
       "data": [
         { "timestamp": 1778054706000, "value": 228.44 },
         { "timestamp": 1778054853000, "value": 232.77 },
@@ -1934,6 +1939,7 @@
       ]
     },
     "8d40325d-41ff-4806-8bdc-deecbef9d523": {
+      "id": "8d40325d-41ff-4806-8bdc-deecbef9d523",
       "data": [
       { "timestamp": 1778025647000, "value": 0.206092 },
       { "timestamp": 1778026569000, "value": 0.168069 },
@@ -2438,6 +2444,7 @@
     ]
     },
     "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12": {
+      "id": "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12",
       "data": [
         {
           "timestamp": 1778054518000,
@@ -4444,6 +4451,7 @@
   },
   "metadata": {
     "b17f0721-4167-427b-b8e8-53c415b8a073": {
+      "id": "b17f0721-4167-427b-b8e8-53c415b8a073",
       "name": "Einspeisung",
       "unit": "W",
       "startDate": "2026-05-06T00:00:00.000000000Z",
@@ -4452,6 +4460,7 @@
       "annotations": []
     },
     "68efb8fd-fa23-4978-998c-3c1cc7b4c60c": {
+      "id": "b17f0721-4167-427b-b8e8-53c415b8a073",
       "name": "Geschwindigkeit",
       "unit": "km/h",
       "startDate": "2026-05-06T00:00:00.000000000Z",
@@ -4460,6 +4469,7 @@
       "annotations": []
     },
     "ec088be1-e23a-4c70-b8c7-d9fe62359db0": {
+      "id": "ec088be1-e23a-4c70-b8c7-d9fe62359db0",
       "name": "Netzspannung",
       "unit": "V",
       "startDate": "2026-05-06T00:00:00.000000000Z",
@@ -4468,6 +4478,7 @@
       "annotations": []
     },
     "8d40325d-41ff-4806-8bdc-deecbef9d523": {
+      "id": "8d40325d-41ff-4806-8bdc-deecbef9d523",
       "name": "Strompreis",
       "unit": "€/kWh",
       "startDate": "2026-05-06T00:00:00.000000000Z",
@@ -4476,6 +4487,7 @@
       "annotations": []
     },
     "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12": {
+      "id": "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12",
       "name": "Windgeschwindigkeitsprognose",
       "unit": "km/h",
       "startDate": "2026-05-06T00:00:00.000000000Z",
