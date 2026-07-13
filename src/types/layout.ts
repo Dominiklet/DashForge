@@ -1,10 +1,10 @@
 export interface Layout {
-  name: string;
-  backgroundColor: string;
-  //timeRange:
-  refreshInterval: number;
-  panels: Panel[];
-  explorerpath: string;
+  name: string,
+  backgroundColor: string,
+  refreshInterval: number,
+  panels: Panel[],
+  explorerpath: string,
+  layout?: Layout | null
 }
 
 export interface Panel {
