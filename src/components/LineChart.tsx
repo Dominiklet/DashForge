@@ -17,35 +17,36 @@ import type {
     LineChartWidgetProps,
     LineType,
     PlotConfiguration,
+    SignalMetadata,
     TimeSeries,
     TimeSeriesMap,
-} from "./types.ts";
-
-interface ChartRow {
-    timestamp: number;
-    [lineId: string]: number;
-}
+} from "./types";
 
 interface ResolvedLine {
     config: PlotConfiguration;
     outputId: string;
     series: TimeSeries;
+    metadata: SignalMetadata;
+    yAxisId: string;
 }
 
-/**
- * Diese Funktion simuliert aktuell den späteren Context.
- *
- * Wichtig:
- * Die Keys des Objekts entsprechen den outputIds aus
- * dataSourceOutputs.
- *
- * Später wird diese Funktion nicht mehr benötigt und durch
- * beispielsweise useTimeSeriesContext() ersetzt.
- */
+interface ChartRow {
+    timestamp: number;
+    [outputId: string]: number;
+}
+
+interface ResolvedAxis {
+    id: string;
+    unit: string | null;
+    orientation: "left" | "right";
+    useUnitOnAxis: boolean;
+    useDefaultAxis: boolean;
+    color: string;
+}
+
 function getMockTimeSeriesData(): TimeSeriesMap {
     return {
         "b17f0721-4167-427b-b8e8-53c415b8a073": {
-            id: "b17f0721-4167-427b-b8e8-53c415b8a073",
             data: [
                 {
                     timestamp: 1778054566000,
@@ -83,11 +84,10 @@ function getMockTimeSeriesData(): TimeSeriesMap {
         },
 
         "68efb8fd-fa23-4978-998c-3c1cc7b4c60c": {
-            id: "68efb8fd-fa23-4978-998c-3c1cc7b4c60c",
             data: [
                 {
                     timestamp: 1778055098000,
-                    value: 228.82,
+                    value: 230.82,
                 },
                 {
                     timestamp: 1778058369000,
@@ -99,7 +99,7 @@ function getMockTimeSeriesData(): TimeSeriesMap {
                 },
                 {
                     timestamp: 1778067123000,
-                    value: 229.04,
+                    value: 233.04,
                 },
                 {
                     timestamp: 1778070315000,
@@ -111,7 +111,7 @@ function getMockTimeSeriesData(): TimeSeriesMap {
                 },
                 {
                     timestamp: 1778079230000,
-                    value: 230.94,
+                    value: 233.94,
                 },
                 {
                     timestamp: 1778083811000,
@@ -120,15 +120,6 @@ function getMockTimeSeriesData(): TimeSeriesMap {
             ],
         },
     };
-}
-
-function formatTimestamp(timestamp: number): string {
-    return new Date(timestamp).toLocaleString("de-DE", {
-        day: "2-digit",
-        month: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-    });
 }
 
 function getStrokeDasharray(
@@ -147,12 +138,27 @@ function getStrokeDasharray(
     }
 }
 
+function formatTimestamp(
+    timestamp: number,
+    timeZone?: string
+): string {
+    return new Intl.DateTimeFormat("de-DE", {
+        day: "2-digit",
+        month: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone,
+    }).format(new Date(timestamp));
+}
+
 function getLegendLayout(
     position: LegendPosition
 ): "horizontal" | "vertical" {
-    return position === "LEFT" || position === "RIGHT"
-        ? "vertical"
-        : "horizontal";
+    if (position === "LEFT" || position === "RIGHT") {
+        return "vertical";
+    }
+
+    return "horizontal";
 }
 
 function getLegendVerticalAlign(
@@ -196,6 +202,53 @@ function getLegendAlign(
             return "center";
     }
 }
+function buildChartData(
+    resolvedLines: ResolvedLine[]
+): ChartRow[] {
+    const chartDataMap = new Map<number, ChartRow>();
+
+    resolvedLines.forEach(({ outputId, series }) => {
+        series.data.forEach((point) => {
+            const row = chartDataMap.get(point.timestamp) ?? {
+                timestamp: point.timestamp,
+            };
+
+            row[outputId] = point.value;
+
+            chartDataMap.set(point.timestamp, row);
+        });
+    });
+
+    return Array.from(chartDataMap.values()).sort(
+        (firstPoint, secondPoint) =>
+            firstPoint.timestamp - secondPoint.timestamp
+    );
+}
+
+function buildAxes(
+    resolvedLines: ResolvedLine[]
+): ResolvedAxis[] {
+    const axes = new Map<string, ResolvedAxis>();
+
+    resolvedLines.forEach(({ config, metadata, yAxisId }) => {
+        if (axes.has(yAxisId)) {
+            return;
+        }
+
+        axes.set(yAxisId, {
+            id: yAxisId,
+            unit: metadata.unit,
+
+            orientation:  "left",
+
+            useUnitOnAxis: config.axisConfig.useUnitOnAxis,
+            useDefaultAxis: config.axisConfig.useDefaultAxis,
+            color: config.lineConfig.color,
+        });
+    });
+
+    return Array.from(axes.values());
+}
 
 export function LineChartWidget({
                                     title,
@@ -203,29 +256,26 @@ export function LineChartWidget({
                                     showPanelBar,
                                     panelConfiguration,
                                     dataSourceOutputs,
+                                    metadata,
                                     layoutPos,
                                 }: LineChartWidgetProps) {
+    //TODO
     /**
-     * Aktuell:
+     * Aktuell kommen hier Mock-Daten.
      */
     const timeSeriesMap = getMockTimeSeriesData();
 
     /**
-     * Später wird nur diese Zeile ausgetauscht:
+     * Später wird nur diese Zeile ersetzt, zum Beispiel:
      *
      * const timeSeriesMap = useTimeSeriesContext();
      */
 
-    const resolvedLines: ResolvedLine[] = panelConfiguration.flatMap(
-        (config) => {
-            /**
-             * Schritt 1:
-             * Über die ID der Linienkonfiguration wird der passende
-             * DataSourceOutput gefunden.
-             */
-            const dataSourceOutput = dataSourceOutputs[config.id];
+    const resolvedLines: ResolvedLine[] =
+        panelConfiguration.flatMap((config) => {
+            const output = dataSourceOutputs[config.id];
 
-            if (!dataSourceOutput) {
+            if (!output) {
                 console.warn(
                     `Kein DataSourceOutput für Konfiguration ${config.id} gefunden.`
                 );
@@ -233,86 +283,59 @@ export function LineChartWidget({
                 return [];
             }
 
-            if (!dataSourceOutput.isReadable) {
+            if (!output.isReadable) {
                 return [];
             }
 
-            if (dataSourceOutput.outputType !== "TIMESERIES") {
+            if (output.outputType !== "TIMESERIES") {
                 return [];
             }
-
-            /**
-             * Schritt 2:
-             * Über outputId wird die richtige Zeitreihe aus dem
-             * Mock-Datenspeicher beziehungsweise später aus dem Context
-             * gelesen.
-             */
-            const series = timeSeriesMap[dataSourceOutput.outputId];
+            const series = timeSeriesMap[output.outputId];
+            const signalMetadata = metadata[output.outputId];
 
             if (!series || series.data.length === 0) {
                 console.warn(
-                    `Keine TimeSeries für outputId ${dataSourceOutput.outputId} gefunden.`
+                    `Keine TimeSeries für outputId ${output.outputId} gefunden.`
                 );
 
                 return [];
             }
 
+            if (!signalMetadata) {
+                console.warn(
+                    `Keine Metadaten für outputId ${output.outputId} gefunden.`
+                );
+
+                return [];
+            }
+            const yAxisId =
+                signalMetadata.unit ?? output.outputId;
+
             return [
                 {
                     config,
-                    outputId: dataSourceOutput.outputId,
+                    outputId: output.outputId,
                     series,
+                    metadata: signalMetadata,
+                    yAxisId,
                 },
             ];
-        }
-    );
-
-    /**
-     * Recharts benötigt ein gemeinsames Daten-Array für alle Linien.
-     *
-     * Das Ergebnis sieht beispielsweise so aus:
-     *
-     * {
-     *   timestamp: 1778054566000,
-     *   "b17f...": 230.63,
-     *   "68ef...": 228.82
-     * }
-     */
-    const chartDataMap = new Map<number, ChartRow>();
-
-    resolvedLines.forEach(({ config, series }) => {
-        series.data.forEach((point) => {
-            const chartRow = chartDataMap.get(point.timestamp) ?? {
-                timestamp: point.timestamp,
-            };
-
-            /**
-             * Die config.id dient als dataKey der Linie.
-             */
-            chartRow[config.id] = point.value;
-
-            chartDataMap.set(point.timestamp, chartRow);
         });
-    });
 
-    const chartData = Array.from(chartDataMap.values()).sort(
-        (firstPoint, secondPoint) =>
-            firstPoint.timestamp - secondPoint.timestamp
-    );
+    const chartData = buildChartData(resolvedLines);
+    const axes = buildAxes(resolvedLines);
 
     const hasData = chartData.length > 0;
 
-    const legendConfig = resolvedLines.find(
+    const visibleLegendConfig = resolvedLines.find(
         ({ config }) => config.legendConfig.show
     )?.config.legendConfig;
 
+    const chartTimeZone =
+        resolvedLines[0]?.metadata.timeZone;
+
     return (
         <div
-            /**
-             * layoutPos wird hier zunächst als Information mitgeführt.
-             *
-             * Dein Dashboard-Grid sollte später w, h, x und y auswerten.
-             */
             data-grid-width={layoutPos.w}
             data-grid-height={layoutPos.h}
             data-grid-x={layoutPos.x}
@@ -320,7 +343,6 @@ export function LineChartWidget({
             style={{
                 width: "100%",
                 height: "100%",
-                minHeight: 300,
             }}
         >
             <WidgetBase
@@ -329,82 +351,154 @@ export function LineChartWidget({
                 showPanelBar={showPanelBar}
                 hasData={hasData}
             >
-                <div
-                    style={{
-                        flex: 1,
-                        width: "100%",
-                        minHeight: 300,
-                    }}
+                <ResponsiveContainer
+                    width="100%"
+                    height={350}
                 >
-                    <ResponsiveContainer width="100%" height={350}>
-                        <LineChart
-                            data={chartData}
-                            margin={{
-                                top: 16,
-                                right: 24,
-                                bottom: 16,
-                                left: 8,
-                            }}
-                        >
-                            <CartesianGrid strokeDasharray="3 3" />
+                    <LineChart
+                        data={chartData}
+                        margin={{
+                            top: 20,
+                            right: 30,
+                            bottom: 20,
+                            left: 10,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
 
-                            <XAxis
-                                dataKey="timestamp"
-                                type="number"
-                                domain={["dataMin", "dataMax"]}
-                                tickFormatter={(value) =>
-                                    formatTimestamp(Number(value))
+                        <XAxis
+                            dataKey="timestamp"
+                            type="number"
+                            scale="time"
+                            domain={["dataMin", "dataMax"]}
+                            tickFormatter={(value) =>
+                                formatTimestamp(
+                                    Number(value),
+                                    chartTimeZone
+                                )
+                            }
+                        />
+
+                        {axes.map((axis) => (
+                            <YAxis
+                                key={axis.id}
+                                yAxisId={axis.id}
+                                orientation={axis.orientation}
+                                domain={
+                                    axis.useDefaultAxis
+                                        ? [0, "auto"]
+                                        : ["auto", "auto"]
                                 }
-                            />
-
-                            <YAxis />
-
-                            <Tooltip
-                                labelFormatter={(value) =>
-                                    formatTimestamp(Number(value))
-                                }
-                            />
-
-                            {legendConfig && (
-                                <Legend
-                                    layout={getLegendLayout(
-                                        legendConfig.position
-                                    )}
-                                    verticalAlign={getLegendVerticalAlign(
-                                        legendConfig.position
-                                    )}
-                                    align={getLegendAlign(
-                                        legendConfig.position,
-                                        legendConfig.adjustment
-                                    )}
-                                />
-                            )}
-
-                            {resolvedLines.map(({ config, outputId }) => (
-                                <Line
-                                    key={outputId}
-                                    dataKey={config.id}
-                                    name={outputId}
-                                    type={config.lineConfig.lineInterpolation}
-                                    stroke={config.lineConfig.color}
-                                    strokeWidth={config.lineConfig.lineSize}
-                                    strokeDasharray={getStrokeDasharray(
-                                        config.lineConfig.lineType
-                                    )}
-                                    dot={
-                                        config.lineConfig.linePointType === "none"
-                                            ? false
-                                            : {
-                                                r: 3,
-                                            }
+                                stroke={axis.color}
+                                tickFormatter={(value) => {
+                                    if (
+                                        !axis.useUnitOnAxis ||
+                                        !axis.unit
+                                    ) {
+                                        return String(value);
                                     }
-                                    connectNulls={config.lineConfig.gap === -1}
-                                    isAnimationActive={false}
-                                />
-                            ))}
-                        </LineChart>
-                    </ResponsiveContainer>
-                </div>
+
+                                    return `${value} ${axis.unit}`;
+                                }}
+                            />
+                        ))}
+
+                        <Tooltip
+                            labelFormatter={(value) =>
+                                formatTimestamp(
+                                    Number(value),
+                                    chartTimeZone
+                                )
+                            }
+                            formatter={(value, _name, item) => {
+                                const line = resolvedLines.find(
+                                    ({ outputId }) =>
+                                        outputId === item.dataKey
+                                );
+
+                                if (!line) {
+                                    return [value, String(item.dataKey)];
+                                }
+
+                                const formattedValue =
+                                    line.metadata.unit
+                                        ? `${value} ${line.metadata.unit}`
+                                        : value;
+
+                                return [
+                                    formattedValue,
+                                    line.metadata.name,
+                                ];
+                            }}
+                        />
+
+                        {visibleLegendConfig && (
+                            <Legend
+                                layout={getLegendLayout(
+                                    visibleLegendConfig.position
+                                )}
+                                verticalAlign={getLegendVerticalAlign(
+                                    visibleLegendConfig.position
+                                )}
+                                align={getLegendAlign(
+                                    visibleLegendConfig.position,
+                                    visibleLegendConfig.adjustment
+                                )}
+                            />
+                        )}
+
+                        {resolvedLines.map(
+                            ({
+                                 config,
+                                 outputId,
+                                 metadata: lineMetadata,
+                                 yAxisId,
+                             }) => {
+                                const legendName =
+                                    config.legendConfig.showUnit &&
+                                    lineMetadata.unit
+                                        ? `${lineMetadata.name} ${lineMetadata.unit}`
+                                        : lineMetadata.name;
+
+                                return (
+                                    <Line
+                                        key={outputId}
+                                        dataKey={outputId}
+                                        yAxisId={yAxisId}
+                                        name={legendName}
+                                        type={
+                                            config.lineConfig.lineInterpolation
+                                        }
+                                        stroke={config.lineConfig.color}
+                                        strokeWidth={
+                                            config.lineConfig.lineSize
+                                        }
+                                        strokeDasharray={getStrokeDasharray(
+                                            config.lineConfig.lineType
+                                        )}
+                                        dot={
+                                            config.lineConfig.linePointType ===
+                                            "none"
+                                                ? false
+                                                : {
+                                                    r: 3,
+                                                }
+                                        }
+                                        connectNulls={
+                                            config.lineConfig.gap === -1
+                                        }
+                                        legendType={
+                                            config.legendConfig.show
+                                                ? "line"
+                                                : "none"
+                                        }
+                                        isAnimationActive={false}
+                                    />
+                                );
+                            }
+                        )}
+                    </LineChart>
+                </ResponsiveContainer>
             </WidgetBase>
         </div>
     );

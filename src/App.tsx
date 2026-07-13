@@ -3,14 +3,12 @@ import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 import titleData from "./templates/dashboard_template.json";
 import { useState, useRef, useEffect } from "react";
 
-// import strompreisData from "./mock data/strompreis.json";
-// import strompreisMeta from "./mock data/strompreis_metadata.json";
-// import { KpiWidget } from "./components/KpiWidget";
-// import markdownData from "./mock data/markdown.json"; // nach mock data zusammenführung muss import angepasst werden
-// import { TextWidget } from "./components/TextWidget";
-// import { PlotWidget } from "./components/PlotWidget";
+import strompreisData from "./mock data/strompreis.json";
+import strompreisMeta from "./mock data/strompreis_metadata.json";
+import markdownData from "./mock data/markdown.json"; // nach mock data zusammenführung muss import angepasst werden
 import {LineChartWidget} from "./components/LineChart";
- interface Titles {
+import type { MetadataMap } from "./components/types";
+interface Titles {
   name: string;
   explorerPath: string;
 }
@@ -18,6 +16,8 @@ import type {
     DataSourceOutput,
     PlotConfiguration,
 } from "./components/types";
+import {TextWidget} from "./components/TextWidget.tsx";
+import {KpiWidget} from "./components/KpiWidget.tsx";
 
 function useDashboardMeta(): Titles {
   const entry = titleData;
@@ -27,6 +27,25 @@ function useDashboardMeta(): Titles {
     explorerPath: entry.nodeInformation.explorerPath,
   };
 }
+const lineChartMetadata: MetadataMap = {
+    "b17f0721-4167-427b-b8e8-53c415b8a073": {
+        name: "Einspeisung",
+        unit: "W",
+        startDate: "2026-05-06T00:00:00.000000000Z",
+        endDate: "2026-05-11T00:00:00.000000000Z",
+        timeZone: "Europe/Berlin",
+        annotations: [],
+    },
+
+    "68efb8fd-fa23-4978-998c-3c1cc7b4c60c": {
+        name: "Geschwindigkeit",
+        unit: "km/h",
+        startDate: "2026-05-06T00:00:00.000000000Z",
+        endDate: "2026-05-11T00:00:00.000000000Z",
+        timeZone: "Europe/Berlin",
+        annotations: [],
+    },
+};
 const lineChartConfiguration: PlotConfiguration[] = [
     {
         id: "b17f0721-4167-427b-b8e8-53c415b8a073",
@@ -177,6 +196,22 @@ function App() {
           display: "grid",
           gap: 12,
         }}>
+          <TextWidget
+              title={markdownData.title}
+              panelStyle={{ backgroundColor: "#f8f8f8" }}
+              showPanelBar={true}
+              code={markdownData.panelConfiguration.code}
+          />
+
+
+          <KpiWidget
+              title="Neues KPI"
+              panelStyle={{ backgroundColor: "#f8f8f8" }}
+              showPanelBar={true}
+              data={strompreisData}
+              unit={strompreisMeta.unit}
+              fractionDigits={4}
+          />
           <div
               style={{
                   width: "100%",
@@ -187,11 +222,11 @@ function App() {
                   title="Momentane Windgeschwindigkeit"
                   panelStyle={{
                       backgroundColor: "#f8f8f8",
-                      backgroundOpacity: 100,
                   }}
                   showPanelBar={true}
                   panelConfiguration={lineChartConfiguration}
                   dataSourceOutputs={lineChartDataSourceOutputs}
+                  metadata={lineChartMetadata}
                   layoutPos={{
                       w: 7,
                       h: 8,

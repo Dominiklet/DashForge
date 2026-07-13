@@ -1,7 +1,4 @@
-import type { WidgetBaseProps } from "../types/panel.ts";
-
-import type { CSSProperties } from "react";
-
+import type { WidgetBaseProps } from "../types/panel";
 
 export interface TimeSeriesPoint {
     timestamp: number;
@@ -9,15 +6,27 @@ export interface TimeSeriesPoint {
 }
 
 export interface TimeSeries {
-    id: string;
     data: TimeSeriesPoint[];
 }
 
 /**
  * Key = outputId
- * Value = zugehörige Zeitreihe
  */
 export type TimeSeriesMap = Record<string, TimeSeries>;
+
+export interface SignalMetadata {
+    name: string;
+    unit: string | null;
+    startDate: string;
+    endDate: string;
+    timeZone: string;
+    annotations: unknown[];
+}
+
+/**
+ * Key = outputId
+ */
+export type MetadataMap = Record<string, SignalMetadata>;
 
 export interface AxisConfig {
     useUnitOnAxis: boolean;
@@ -44,9 +53,16 @@ export interface LineConfig {
     lineInterpolation: LineInterpolation;
 }
 
-export type LegendPosition = "TOP" | "BOTTOM" | "LEFT" | "RIGHT";
+export type LegendPosition =
+    | "TOP"
+    | "BOTTOM"
+    | "LEFT"
+    | "RIGHT";
 
-export type LegendAdjustment = "START" | "CENTER" | "END";
+export type LegendAdjustment =
+    | "START"
+    | "CENTER"
+    | "END";
 
 export interface LegendConfig {
     show: boolean;
@@ -60,7 +76,12 @@ export interface CommentsConfig {
 }
 
 export interface PlotConfiguration {
+    /**
+     * ID der einzelnen Linienkonfiguration.
+     * Mit dieser ID wird der DataSourceOutput gefunden.
+     */
     id: string;
+
     axisConfig: AxisConfig;
     lineConfig: LineConfig;
     legendConfig: LegendConfig;
@@ -82,21 +103,17 @@ export interface LayoutPosition {
     y: number;
 }
 
-/**
- * Die WidgetBase erhält title, panelStyle und showPanelBar.
- *
- * hasData und children legt die LineChartWidget selbst fest.
- */
 export interface LineChartWidgetProps
-    extends Omit<WidgetBaseProps, "hasData" | "children"> {
+    extends Omit<WidgetBaseProps, "children" | "hasData"> {
     panelConfiguration: PlotConfiguration[];
-    dataSourceOutputs: Record<string, DataSourceOutput>;
-    layoutPos: LayoutPosition;
-}
 
-/**
- * Optional, falls du das Widget testweise ohne Grid darstellen möchtest.
- */
-export interface LineChartContainerStyle {
-    style?: CSSProperties;
+    dataSourceOutputs: Record<string, DataSourceOutput>;
+
+    /**
+     * Die Metadaten werden von außen übergeben.
+     * Key = outputId
+     */
+    metadata: MetadataMap;
+
+    layoutPos: LayoutPosition;
 }
