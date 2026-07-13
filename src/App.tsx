@@ -1,136 +1,19 @@
 import "./App.css";
-import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
-import titleData from "./templates/dashboard_template.json";
-import { useState, useRef, useEffect } from "react";
+import {BsBarChartLine ,BsFullscreen, BsFullscreenExit} from "react-icons/bs";
+import {useState, useRef, useEffect} from "react";
+import type {Layout} from "./types/layout.ts";
+import {DataContext} from "./Context/DataContext.tsx";
+import {MetaDataContext} from "./Context/MetaDataContext.tsx"
+import type {TimeData} from "./types/TimeData.ts";
+import type {MetaData} from "./types/MetaData.ts";
 
-import strompreisData from "./mock data/strompreis.json";
-import strompreisMeta from "./mock data/strompreis_metadata.json";
-import markdownData from "./mock data/markdown.json"; // nach mock data zusammenführung muss import angepasst werden
-import {LineChartWidget} from "./components/LineChart";
-import type { MetadataMap } from "./components/types";
-interface Titles {
-  name: string;
-  explorerPath: string;
-}
-import type {
-    DataSourceOutput,
-    PlotConfiguration,
-} from "./components/types";
-import {TextWidget} from "./components/TextWidget.tsx";
-import {KpiWidget} from "./components/KpiWidget.tsx";
-
-function useDashboardMeta(): Titles {
-  const entry = titleData;
-
-  return {
-    name: entry.name,
-    explorerPath: entry.nodeInformation.explorerPath,
-  };
-}
-const lineChartMetadata: MetadataMap = {
-    "b17f0721-4167-427b-b8e8-53c415b8a073": {
-        name: "Einspeisung",
-        unit: "W",
-        startDate: "2026-05-06T00:00:00.000000000Z",
-        endDate: "2026-05-11T00:00:00.000000000Z",
-        timeZone: "Europe/Berlin",
-        annotations: [],
-    },
-
-    "68efb8fd-fa23-4978-998c-3c1cc7b4c60c": {
-        name: "Geschwindigkeit",
-        unit: "km/h",
-        startDate: "2026-05-06T00:00:00.000000000Z",
-        endDate: "2026-05-11T00:00:00.000000000Z",
-        timeZone: "Europe/Berlin",
-        annotations: [],
-    },
-};
-const lineChartConfiguration: PlotConfiguration[] = [
-    {
-        id: "b17f0721-4167-427b-b8e8-53c415b8a073",
-
-        axisConfig: {
-            useUnitOnAxis: true,
-            useDefaultAxis: false,
-        },
-
-        lineConfig: {
-            gap: -1,
-            color: "#3366cc",
-            lineSize: 1,
-            lineType: "solid",
-            linePointType: "none",
-            lineInterpolation: "linear",
-        },
-
-        legendConfig: {
-            show: true,
-            position: "TOP",
-            showUnit: true,
-            adjustment: "CENTER",
-        },
-
-        commentsConfig: {
-            isCommentsEnabled: false,
-        },
-    },
-
-    {
-        id: "68efb8fd-fa23-4978-998c-3c1cc7b4c60c",
-
-        axisConfig: {
-            useUnitOnAxis: true,
-            useDefaultAxis: false,
-        },
-
-        lineConfig: {
-            gap: -1,
-            color: "#ff9901",
-            lineSize: 1,
-            lineType: "solid",
-            linePointType: "none",
-            lineInterpolation: "linear",
-        },
-
-        legendConfig: {
-            show: true,
-            position: "TOP",
-            showUnit: true,
-            adjustment: "CENTER",
-        },
-
-        commentsConfig: {
-            isCommentsEnabled: false,
-        },
-    },
-];
-
-const lineChartDataSourceOutputs: Record<string, DataSourceOutput> = {
-    "b17f0721-4167-427b-b8e8-53c415b8a073": {
-        outputId: "b17f0721-4167-427b-b8e8-53c415b8a073",
-        referenceId: "5617b568-1624-400b-85fc-0a3e5d157ecb",
-        outputType: "TIMESERIES",
-        nodeType: "SIGNAL",
-        isReadable: true,
-    },
-
-    "68efb8fd-fa23-4978-998c-3c1cc7b4c60c": {
-        outputId: "68efb8fd-fa23-4978-998c-3c1cc7b4c60c",
-        referenceId: "86616ea1-5eb4-4bc0-a7a0-60da43478f0c",
-        outputType: "TIMESERIES",
-        nodeType: "SIGNAL",
-        isReadable: true,
-    },
-};
 
 function App() {
-  const { name, explorerPath } = useDashboardMeta();
+  const [layout, setLayout] = useState<Layout | null>(null);
+  const [timeData, setTimeData] = useState<TimeData | undefined>(undefined);
+  const [metaData, setMetaData] = useState<MetaData | undefined>(undefined);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
- // const markdown = "**Dashboard Windkraftwerk 1**\n\nEin technisches Überwachungs-Dashboard zur Analyse von Windgeschwindigkeit, Netzspannung und aktuellen Strompreisen für erneuerbare Energien.";
-
-
 
   const toggleFullscreen = async () => {
     if (!document.fullscreenElement) {
@@ -143,6 +26,34 @@ function App() {
   };
 
   useEffect(() => {
+    const fetchLayout = async function () {
+      try {
+        const res = await fetch('http://localhost:3000/layoutJson');
+        if (!res.ok) {
+          console.error('Layout konnte nicht erreicht werden!');
+        }
+        const layout: Layout = await res.json();
+        setLayout(layout);
+
+        const resData: Response = await fetch('http://localhost:3000/timeData');
+        if (!resData.ok) {
+          console.error('Zeitreihendaten konnten nicht erreicht werden!');
+        }
+        const parsedTimeData: TimeData = await resData.json();
+        setTimeData(parsedTimeData);
+
+        const metaDataResponse: Response = await fetch('http://localhost:3000/metadata');
+        if (!metaDataResponse.ok) {
+          console.error('Metadaten konnten nicht erreicht werden!');
+        }
+        const parsedMetaData: MetaData = await metaDataResponse.json();
+        setMetaData(parsedMetaData);
+      } catch (error) {
+        console.error(`Unerwarteter Fehler aufgetreten! \n${error}`)
+      }
+    }
+    fetchLayout();
+
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
     };
@@ -156,86 +67,39 @@ function App() {
 
   return (
     <div ref={containerRef} className="fullscreen">
-      <div style={{ color: "#6b6375", textAlign: "left" }}>{explorerPath}</div>
-
-      <hr />
-
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <BsBarChartLine size={16} color="#aa3bff" />
-          <span style={{ fontWeight: 600, color: "#08060d" }}>{name}</span>
-        </div>
-
-        <button
-          onClick={toggleFullscreen}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "#6b6375",
-            marginTop: 2,
-          }}>
-          {isFullscreen ? (
-            <BsFullscreenExit size={16} />
-          ) : (
-            <BsFullscreen size={16} />
-          )}
-        </button>
-      </div>
-
-      <div
-        style={{
-          flex: 1,
-          position: "relative",
-          padding: 16,
-          display: "grid",
-          gap: 12,
-        }}>
-          <TextWidget
-              title={markdownData.title}
-              panelStyle={{ backgroundColor: "#f8f8f8" }}
-              showPanelBar={true}
-              code={markdownData.panelConfiguration.code}
-          />
-
-
-          <KpiWidget
-              title="Neues KPI"
-              panelStyle={{ backgroundColor: "#f8f8f8" }}
-              showPanelBar={true}
-              data={strompreisData}
-              unit={strompreisMeta.unit}
-              fractionDigits={4}
-          />
+      <DataContext.Provider value={timeData}>
+        <MetaDataContext.Provider value={metaData}>
+          <div style={{color: "#6b6375", textAlign: "left"}}>{layout?.explorerpath}</div>
+          <hr/>
           <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
+            <div style={{display: "flex", alignItems: "center", gap: 8}}>
+              <BsBarChartLine size={16} color="#aa3bff" />
+              <span style={{fontWeight: 600, color: "#08060d"}}>{layout?.name}</span>
+            </div>
+
+            <button
+              onClick={toggleFullscreen}
               style={{
-                  width: "100%",
-                  height: 450,
-              }}
-          >
-              <LineChartWidget
-                  title="Momentane Windgeschwindigkeit"
-                  panelStyle={{
-                      backgroundColor: "#f8f8f8",
-                  }}
-                  showPanelBar={true}
-                  panelConfiguration={lineChartConfiguration}
-                  dataSourceOutputs={lineChartDataSourceOutputs}
-                  metadata={lineChartMetadata}
-                  layoutPos={{
-                      w: 7,
-                      h: 8,
-                      x: 0,
-                      y: 0,
-                  }}
-              />
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: "#6b6375",
+                marginTop: 2,
+              }}>
+              {isFullscreen ? (
+                <BsFullscreenExit size={16}/>
+              ) : (
+                <BsFullscreen size={16}/>
+              )}
+            </button>
           </div>
-      </div>
+        </MetaDataContext.Provider>
+      </DataContext.Provider>
     </div>
   );
 }
