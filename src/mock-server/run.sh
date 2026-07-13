@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [ -f /data/db.json ]; then
-    echo "Found testdata.json"
-    json-server -p 3000 /data/db.json
+if [ -f /data/mockData.json ]; then
+    echo "Found mockData.json"
+    json-server -p 3000 /data/mockData.json
 else
-    echo "No testdata.json found"
+    echo "No mockData.json found"
     exit 1
 fi

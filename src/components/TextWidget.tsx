@@ -12,11 +12,11 @@ interface TextWidgetProps {
 }
 
 export function TextWidget({
-  title,
-  panelStyle,
-  showPanelBar,
-  code,
-}: TextWidgetProps) {
+                             title,
+                             panelStyle,
+                             showPanelBar,
+                             code,
+                           }: TextWidgetProps) {
   return (
     <WidgetBase
       title={title}
