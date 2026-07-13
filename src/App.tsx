@@ -5,12 +5,13 @@ import type {Layout} from "./types/layout.ts";
 import {DataContext} from "./Context/DataContext.tsx";
 import {MetaDataContext} from "./Context/MetaDataContext.tsx"
 import type {TimeData} from "./types/TimeData.ts";
+import type {MetaData} from "./types/MetaData.ts";
 
 
 function App() {
   const [layout, setLayout] = useState<Layout | null>(null);
-  const [timeData, setTimeData] = useState<TimeData | null>(null);
-  const [metaData, setMetaData] = useState<MetaData | null>(null);
+  const [timeData, setTimeData] = useState<TimeData | undefined>(undefined);
+  const [metaData, setMetaData] = useState<MetaData | undefined>(undefined);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -34,18 +35,18 @@ function App() {
         const layout: Layout = await res.json();
         setLayout(layout);
 
-        const resData: TimeData = await fetch('http://localhost:3000/timeData');
+        const resData: Response = await fetch('http://localhost:3000/timeData');
         if (!resData.ok) {
           console.error('Zeitreihendaten konnten nicht erreicht werden!');
         }
         const parsedTimeData: TimeData = await resData.json();
         setTimeData(parsedTimeData);
 
-        const metaDataResponse: TimeData = await fetch('http://localhost:3000/metadata');
+        const metaDataResponse: Response = await fetch('http://localhost:3000/metadata');
         if (!metaDataResponse.ok) {
           console.error('Metadaten konnten nicht erreicht werden!');
         }
-        const parsedMetaData: TimeData = await metaDataResponse.json();
+        const parsedMetaData: MetaData = await metaDataResponse.json();
         setMetaData(parsedMetaData);
       } catch (error) {
         console.error(`Unerwarteter Fehler aufgetreten! \n${error}`)
