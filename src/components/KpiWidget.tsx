@@ -1,12 +1,17 @@
-import type { DataPoint, PanelStyle } from "../types/panel";
+import type { PanelStyle } from "../types/panel";
 import { WidgetBase } from "./WidgetBase";
-import { useDataSource } from "../context/useDataSource";
+
+interface DataPoint {
+  timestamp: number;
+  value: number;
+}
 
 interface KpiWidgetProps {
   title: string;
   panelStyle?: Partial<PanelStyle>;
   showPanelBar: boolean;
-  dataSourceId: string;
+  data: DataPoint[];
+  unit?: string;
   defaultText?: string;
   fontSizeText?: number;
   fontSizeValue?: number;
@@ -22,17 +27,15 @@ function getLatestValue(data: DataPoint[]): number | null {
 }
 
 export function KpiWidget({
-  title,
-  panelStyle,
-  showPanelBar,
-  dataSourceId,
-  defaultText = "Letzter Preis",
-  fractionDigits = 2,
-  defaultTextPosition = "top",
-}: KpiWidgetProps) {
-  const source = useDataSource(dataSourceId);
-  const data = source?.type === "timeseries" ? source.data : [];
-  const unit = source?.type === "timeseries" ? source.metadata.unit : null;
+                            title,
+                            panelStyle,
+                            showPanelBar,
+                            data,
+                            unit,
+                            defaultText = "Letzter Preis",
+                            fractionDigits = 2,
+                            defaultTextPosition = "top",
+                          }: KpiWidgetProps) {
   const latestValue = getLatestValue(data);
 
   return (

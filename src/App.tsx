@@ -4,8 +4,8 @@ import type {Layout} from "./types/layout.ts";
 import type {TimeData} from "./types/TimeData.ts";
 import type {MetaData} from "./types/MetaData.ts";
 import {Dashboard} from "./components/Dashboard.tsx";
-import {DataContext} from "./context/DataContext.tsx";
-import {MetaDataContext} from "./context/MetaDataContext.tsx";
+import {DataContext} from "./Context/DataContext.tsx";
+import {MetaDataContext} from "./Context/MetaDataContext.tsx";
 
 
 function App() {
