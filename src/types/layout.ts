@@ -12,12 +12,12 @@ export interface Layout {
 export interface Panel {
   panelType: string;
   panelStyle: PanelStyle;
-  panelConfiguration: PanelConfiguration[];
+  panelConfiguration: PanelConfiguration | PanelConfiguration[];
   timeRange: string;
   title: string;
   showPanelBar: boolean;
   layoutPos: LayoutPos;
-  dataSourceOutputs: DataSourceOutput[];
+  dataSourceOutputs: { [outputId: string]: DataSourceOutput };
 }
 
 export interface PanelStyle {
