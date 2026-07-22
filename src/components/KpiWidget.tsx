@@ -1,27 +1,24 @@
 import {WidgetBase} from "./WidgetBase";
 import type {Panel} from "../types/layout.ts";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {DataContext} from "../Context/DataContext.tsx";
 import type {TimeData} from "../types/TimeData.ts";
 import type {KpiData} from "../types/DataTypes/KpiData.ts";
-import type {PanelData} from "../types/DataTypes/PanelData.ts";
+import type {KpiPanelConfiguration} from "../types/PanelConfigurationTypes/PanelConfiguration.ts";
 
 interface KpiWidgetProps {
   panel: Panel
+  panelConfiguration: KpiPanelConfiguration;
 }
 
 
-export function KpiWidget(kpiWindgetProp: KpiWidgetProps) {
-  const [kpiData, setKpiData] = useState<KpiData>({id: "", unit: " ", value: 0})
-  const panel: Panel = kpiWindgetProp.panel;
-  const dataContext: TimeData | undefined = useContext(DataContext);
+export function KpiWidget( {panel, panelConfiguration}: KpiWidgetProps) {
 
-  if (dataContext) {
-    const fetchedData: PanelData = dataContext[panel.dataSourceOutputs[0].outputId]
-    if (fetchedData) {
-      setKpiData(fetchedData as KpiData);
-    }
-  }
+  const dataContext: TimeData | undefined = useContext(DataContext);
+  const outputId = Object.values(panel.dataSourceOutputs)[0]?.outputId;
+  const kpiData = outputId ? (dataContext?.[outputId] as KpiData | undefined) : undefined;
+
+  const {defaultText, defaultTextPosition, fractionDigits} = panelConfiguration;
 
 
   return (
@@ -33,11 +30,11 @@ export function KpiWidget(kpiWindgetProp: KpiWidgetProps) {
           <span className="kpi-label">{defaultText}</span>
         )}
         <span className="kpi-value">
-          {kpiData.value?.toLocaleString("de-DE", {
+          {kpiData?.value?.toLocaleString("de-DE", {
             minimumFractionDigits: fractionDigits,
             maximumFractionDigits: fractionDigits,
           })}
-          {kpiData.unit && <span className="kpi-unit">{kpiData.unit}</span>}
+          {kpiData?.unit && <span className="kpi-unit">{kpiData.unit}</span>}
         </span>
         {defaultTextPosition === "bottom" && defaultText && (
           <span className="kpi-label">{defaultText}</span>

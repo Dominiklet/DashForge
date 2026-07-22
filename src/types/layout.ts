@@ -21,13 +21,13 @@ export interface Panel {
 }
 
 export interface PanelStyle {
-  marginRight: string;
-  marginLeft: string;
-  marginBottom: string;
-  marginTop: string;
-  backgroundColor: string;
-  textColor: string;
-  selfManagedMargins: string;
+  marginRight: string | null;
+  marginLeft: string | null;
+  marginBottom: string | null;
+  marginTop: string | null;
+  backgroundColor: string | null;
+  textColor: string | null;
+  selfManagedMargins: string | null;
 }
 
 

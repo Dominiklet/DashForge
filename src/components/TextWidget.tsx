@@ -1,28 +1,26 @@
-import "./WidgetBase.css";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import type { PanelStyle } from "../types/panel";
+import { useContext } from "react";
 import { WidgetBase } from "./WidgetBase";
+import type { Panel } from "../types/layout.ts";
+import { DataContext } from "../Context/DataContext.tsx";
+import type { TimeData } from "../types/TimeData.ts";
+import type { MarkDownData } from "../types/DataTypes/MarkDownData.ts";
+import type { TextPanelConfiguration } from "../types/PanelConfigurationTypes/PanelConfiguration.ts";
 
 interface TextWidgetProps {
-  title: string;
-  panelStyle?: Partial<PanelStyle>;
-  showPanelBar: boolean;
-  code: string;
+  panel: Panel;
+  panelConfiguration: TextPanelConfiguration;
 }
 
-export function TextWidget({
-                             title,
-                             panelStyle,
-                             showPanelBar,
-                             code,
-                           }: TextWidgetProps) {
+export function TextWidget({ panel }: TextWidgetProps) {
+  const dataContext: TimeData | undefined = useContext(DataContext);
+  const outputId = Object.values(panel.dataSourceOutputs)[0]?.outputId;
+  const markdownData = outputId ? (dataContext?.[outputId] as MarkDownData | undefined) : undefined;
+  const code = markdownData?.content;
+
   return (
-    <WidgetBase
-      title={title}
-      panelStyle={panelStyle}
-      showPanelBar={showPanelBar}
-      hasData={!!code}>
+    <WidgetBase panel={panel} hasData={!!code}>
       <div className="widget-markdown">
         <ReactMarkdown rehypePlugins={[rehypeRaw]}>{code}</ReactMarkdown>
       </div>

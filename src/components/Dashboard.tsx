@@ -1,10 +1,38 @@
 import "../App.css";
 import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 import { useState, useRef, useEffect } from "react";
-import type {Layout} from "../types/layout.ts";
+import type {Layout, Panel} from "../types/layout.ts";
+import { KpiWidget } from "./KpiWidget";
+import { TextWidget } from "./TextWidget";
+import type {
+  KpiPanelConfiguration,
+  TextPanelConfiguration,
+} from "../types/PanelConfigurationTypes/PanelConfiguration.ts";
 
 export interface DashboardInterface {
   layout:Layout;
+}
+
+function renderPanel(panel: Panel) {
+  switch (panel.panelType) {
+    case "KPI":
+      return (
+        <KpiWidget
+          panel={panel}
+          panelConfiguration={panel.panelConfiguration as KpiPanelConfiguration}
+        />
+      );
+    case "TEXT":
+      return (
+        <TextWidget
+          panel={panel}
+          panelConfiguration={panel.panelConfiguration as TextPanelConfiguration}
+        />
+      );
+    default:
+      // TODO: PlotWidget umsetzen
+      return null;
+  }
 }
 
 export function Dashboard(dashboardInterface: DashboardInterface) {
@@ -30,6 +58,7 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
   }, []);
 
   if(!layout) return <div></div>
+
   return (
     <div ref={containerRef} className="fullscreen">
       <div style={{ color: "#6b6375", textAlign: "left" }}>{layout.explorerpath}</div>
@@ -61,15 +90,27 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
         </button>
       </div>
 
+
       <div
         style={{
           flex: 1,
           position: "relative",
           padding: 16,
           display: "grid",
+          gridTemplateColumns: "repeat(24, 1fr)",
+          gridAutoRows: "40px",
           gap: 12,
         }}>
-
+        {layout.panels.map((panel, index) => (
+          <div
+            key={index}
+            style={{
+              gridColumn: `${panel.layoutPos.x + 1} / span ${panel.layoutPos.w}`,
+              gridRow: `${panel.layoutPos.y + 1} / span ${panel.layoutPos.h}`,
+            }}>
+            {renderPanel(panel)}
+          </div>
+        ))}
       </div>
     </div>
   );

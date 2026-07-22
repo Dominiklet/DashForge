@@ -3,7 +3,8 @@ import "./WidgetBase.css";
 import type {Panel} from "../types/layout.ts";
 import type { ReactNode } from "react";
 
-function hexToRgba(hex: string, opacity: number): string {
+function hexToRgba(hex: string | null, opacity: number): string | undefined {
+  if (!hex) return undefined;
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
@@ -47,7 +48,7 @@ export function WidgetBase(widgetBaseProps: WidgetBaseProps) {
       className="widget-base"
       style={{
         backgroundColor: background,
-        color: panelStyle.textColor,
+        color: panelStyle.textColor ?? undefined,
         ...margin,
       }}
     >
