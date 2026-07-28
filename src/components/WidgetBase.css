@@ -41,6 +41,29 @@
   font-size: 0.9rem;
 }
 
+/* ----- IMAGE ----- */
+.widget-image {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.image-scaled {
+  max-width: 97%;
+  padding: 2%;
+}
+
+.image-original {
+  max-width: 97%;
+  padding: 2%;
+}
+
+.image-centered {
+  max-width: 97%;
+  padding: 2%;
 /* ----- MARKDOWN ----- */
 .widget-markdown {
   padding: 1rem;
