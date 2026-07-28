@@ -1,4 +1,4 @@
-export interface PanelConfiguration{}
+export type PanelConfiguration = object;
 
 export interface KpiPanelConfiguration extends PanelConfiguration {
   lowerLimit: KpiLimitConfiguration;
