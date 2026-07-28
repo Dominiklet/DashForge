@@ -99,7 +99,6 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
           display: "grid",
           gridTemplateColumns: "repeat(24, 1fr)",
           gridAutoRows: "40px",
-          gap: 12,
         }}>
         {layout.panels.map((panel, index) => (
           <div
