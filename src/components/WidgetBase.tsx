@@ -1,8 +1,10 @@
 import { BsExclamationCircle } from "react-icons/bs";
-import type { WidgetBaseProps } from "../types/panel";
 import "./WidgetBase.css";
+import type {Panel} from "../types/layout.ts";
+import type { ReactNode } from "react";
 
-function hexToRgba(hex: string, opacity: number): string {
+function hexToRgba(hex: string | null, opacity: number): string | undefined {
+  if (!hex) return undefined;
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
@@ -18,36 +20,26 @@ function WidgetNoData() {
   );
 }
 
-export function WidgetBase({
-  title,
-  panelStyle = {},
-  showPanelBar,
-  hasData,
-  children,
-}: WidgetBaseProps) {
-  const {
-    backgroundColor = null,
-    backgroundOpacity = null,
-    textColor = null,
-    marginTop = null,
-    marginRight = null,
-    marginBottom = null,
-    marginLeft = null,
-    selfManagedMargins = false,
-  } = panelStyle;
+interface WidgetBaseProps {
+  panel: Panel;
+  hasData: boolean;
+  children: ReactNode;
+}
 
-  const background =
-    backgroundColor && backgroundOpacity !== null
-      ? hexToRgba(backgroundColor, backgroundOpacity)
-      : backgroundColor ?? undefined;
+export function WidgetBase(widgetBaseProps: WidgetBaseProps) {
+  const title = widgetBaseProps.panel.title;
+  const panelStyle = widgetBaseProps.panel.panelStyle;
+  const showPanelBar  = widgetBaseProps.panel.showPanelBar;
+
+  const background = hexToRgba(panelStyle.backgroundColor,1);
 
   const margin =
-    !selfManagedMargins
+    !panelStyle.selfManagedMargins
       ? {
-          marginTop: marginTop ?? undefined,
-          marginRight: marginRight ?? undefined,
-          marginBottom: marginBottom ?? undefined,
-          marginLeft: marginLeft ?? undefined,
+          marginTop: panelStyle.marginTop ?? undefined,
+          marginRight: panelStyle.marginRight ?? undefined,
+          marginBottom: panelStyle.marginBottom ?? undefined,
+          marginLeft: panelStyle.marginLeft ?? undefined,
         }
       : {};
 
@@ -56,7 +48,7 @@ export function WidgetBase({
       className="widget-base"
       style={{
         backgroundColor: background,
-        color: textColor ?? undefined,
+        color: panelStyle.textColor ?? undefined,
         ...margin,
       }}
     >
@@ -66,7 +58,7 @@ export function WidgetBase({
         </div>
       )}
       <div className="widget-content">
-        {hasData ? children : <WidgetNoData />}
+        {widgetBaseProps.hasData ? widgetBaseProps.children : <WidgetNoData />}
       </div>
     </div>
   );

@@ -1,30 +1,20 @@
-import "./WidgetBase.css";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import type { PanelStyle } from "../types/panel";
-import { WidgetBase } from "./WidgetBase";
+import {WidgetBase} from "./WidgetBase";
+import type {Panel} from "../types/layout.ts";
+import type {TextPanelConfiguration} from "../types/PanelConfigurationTypes/PanelConfiguration.ts";
 
 interface TextWidgetProps {
-  title: string;
-  panelStyle?: Partial<PanelStyle>;
-  showPanelBar: boolean;
-  code: string;
+  panel: Panel;
 }
 
-export function TextWidget({
-                             title,
-                             panelStyle,
-                             showPanelBar,
-                             code,
-                           }: TextWidgetProps) {
+export function TextWidget({ panel }: TextWidgetProps) {
+  const panelConfiguration = panel.panelConfiguration as TextPanelConfiguration
+
   return (
-    <WidgetBase
-      title={title}
-      panelStyle={panelStyle}
-      showPanelBar={showPanelBar}
-      hasData={!!code}>
+    <WidgetBase panel={panel} hasData={!!panelConfiguration.code}>
       <div className="widget-markdown">
-        <ReactMarkdown rehypePlugins={[rehypeRaw]}>{code}</ReactMarkdown>
+        <ReactMarkdown rehypePlugins={[rehypeRaw]}>{panelConfiguration.code}</ReactMarkdown>
       </div>
     </WidgetBase>
   );

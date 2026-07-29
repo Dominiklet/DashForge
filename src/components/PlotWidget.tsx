@@ -1,18 +1,16 @@
 import type { ReactNode } from "react";
-import type { PanelStyle } from "../types/panel";
 import { WidgetBase } from "./WidgetBase";
+import type { Panel } from "../types/layout.ts";
 
 interface PlotWidgetProps {
-  title: string;
-  panelStyle?: Partial<PanelStyle>;
-  showPanelBar: boolean;
+  panel: Panel;
   hasData: boolean;
   children: ReactNode;
 }
 
-export function PlotWidget({ title, panelStyle, showPanelBar, hasData, children }: PlotWidgetProps) {
+export function PlotWidget({ panel, hasData, children }: PlotWidgetProps) {
   return (
-    <WidgetBase title={title} panelStyle={panelStyle} showPanelBar={showPanelBar} hasData={hasData}>
+    <WidgetBase panel={panel} hasData={hasData}>
       {children}
     </WidgetBase>
   );

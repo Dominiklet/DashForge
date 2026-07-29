@@ -1,3 +1,5 @@
+import type {PanelConfiguration} from "./PanelConfigurationTypes/PanelConfiguration.ts";
+
 export interface Layout {
   name: string,
   backgroundColor: string,
@@ -10,28 +12,25 @@ export interface Layout {
 export interface Panel {
   panelType: string;
   panelStyle: PanelStyle;
-  panelConfiguration: PanelConfiguration[];
+  panelConfiguration: PanelConfiguration | PanelConfiguration[];
   timeRange: string;
   title: string;
   showPanelBar: boolean;
   layoutPos: LayoutPos;
-  dataSourceOutputs: DataSourceOutput[];
+  dataSourceOutputs: { [outputId: string]: DataSourceOutput };
 }
 
 export interface PanelStyle {
-  marginRight: string;
-  marginLeft: string;
-  marginBottom: string;
-  marginTop: string;
-  backgroundColor: string;
-  textColor: string;
-  selfManagedMargins: string;
+  marginRight: string | null;
+  marginLeft: string | null;
+  marginBottom: string | null;
+  marginTop: string | null;
+  backgroundColor: string | null;
+  textColor: string | null;
+  selfManagedMargins: string | null;
 }
 
-export interface PanelConfiguration {
-  alignment: string;
-  originalImageName: string;
-}
+
 
 export interface LayoutPos {
   w: number;

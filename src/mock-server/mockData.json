@@ -216,14 +216,16 @@
           "limitBreakText": "",
           "limitTextColor": "#28282d",
           "hideSensorValue": false,
-          "limitBackgroundColor": "#f8f8f8"
+          "limitBackgroundColor": "#f8f8f8",
+          "value": 1
         },
         "upperLimit": {
           "strict": false,
           "limitBreakText": "",
           "limitTextColor": "#28282d",
           "hideSensorValue": false,
-          "limitBackgroundColor": "#f8f8f8"
+          "limitBackgroundColor": "#f8f8f8",
+          "value": 20
         },
         "defaultText": "Letzter Preis",
         "kpiCalcType": "MEDIAN",

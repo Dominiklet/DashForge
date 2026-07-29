@@ -1,62 +1,41 @@
-import type { PanelStyle } from "../types/panel";
-import { WidgetBase } from "./WidgetBase";
-
-interface DataPoint {
-  timestamp: number;
-  value: number;
-}
+import {WidgetBase} from "./WidgetBase";
+import type {Panel} from "../types/layout.ts";
+import {useContext} from "react";
+import {DataContext} from "../Context/DataContext.tsx";
+import type {TimeData} from "../types/TimeData.ts";
+import type {KpiData} from "../types/DataTypes/KpiData.ts";
+import type {KpiPanelConfiguration} from "../types/PanelConfigurationTypes/PanelConfiguration.ts";
 
 interface KpiWidgetProps {
-  title: string;
-  panelStyle?: Partial<PanelStyle>;
-  showPanelBar: boolean;
-  data: DataPoint[];
-  unit?: string;
-  defaultText?: string;
-  fontSizeText?: number;
-  fontSizeValue?: number;
-  fractionDigits?: number;
-  defaultTextPosition?: "top" | "bottom";
+  panel: Panel
 }
 
-function getLatestValue(data: DataPoint[]): number | null {
-  if (!data || data.length === 0) return null;
-  return data.reduce((latest, point) =>
-    point.timestamp > latest.timestamp ? point : latest,
-  ).value;
-}
 
-export function KpiWidget({
-                            title,
-                            panelStyle,
-                            showPanelBar,
-                            data,
-                            unit,
-                            defaultText = "Letzter Preis",
-                            fractionDigits = 2,
-                            defaultTextPosition = "top",
-                          }: KpiWidgetProps) {
-  const latestValue = getLatestValue(data);
+export function KpiWidget( {panel}: KpiWidgetProps) {
+
+  const dataContext: TimeData | undefined = useContext(DataContext);
+  const outputId = Object.values(panel.dataSourceOutputs)[0]?.outputId;
+  const kpiData = outputId ? (dataContext?.[outputId] as KpiData | undefined) : undefined;
+  const kpiPanelConfiguration = panel.panelConfiguration as KpiPanelConfiguration
+
 
   return (
     <WidgetBase
-      title={title}
-      panelStyle={panelStyle}
-      showPanelBar={showPanelBar}
-      hasData={latestValue !== null}>
+      panel={panel}
+      hasData={!!kpiData}>
       <div className="widget-kpi">
-        {defaultTextPosition === "top" && defaultText && (
-          <span className="kpi-label">{defaultText}</span>
+        {kpiPanelConfiguration.defaultTextPosition === "top" && kpiPanelConfiguration.defaultText && (
+          <span className="kpi-label">{kpiPanelConfiguration.defaultText}</span>
         )}
         <span className="kpi-value">
-          {latestValue?.toLocaleString("de-DE", {
-            minimumFractionDigits: fractionDigits,
-            maximumFractionDigits: fractionDigits,
+          {kpiData?.value?.toLocaleString("de-DE", {
+            minimumFractionDigits: kpiPanelConfiguration.fractionDigits,
+            maximumFractionDigits: kpiPanelConfiguration.fractionDigits,
           })}
-          {unit && <span className="kpi-unit">{unit}</span>}
+          {kpiData?.unit && <span className="kpi-unit">{kpiData.unit}</span>}
         </span>
-        {defaultTextPosition === "bottom" && defaultText && (
-          <span className="kpi-label">{defaultText}</span>
+        {kpiPanelConfiguration.defaultTextPosition === "bottom" && kpiPanelConfiguration.defaultText && (
+          <span className="kpi-label">{kpiPanelConfiguration.defaultText}</span>
         )}
       </div>
     </WidgetBase>
