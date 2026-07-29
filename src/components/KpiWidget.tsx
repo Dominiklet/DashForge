@@ -8,17 +8,15 @@ import type {KpiPanelConfiguration} from "../types/PanelConfigurationTypes/Panel
 
 interface KpiWidgetProps {
   panel: Panel
-  panelConfiguration: KpiPanelConfiguration;
 }
 
 
-export function KpiWidget( {panel, panelConfiguration}: KpiWidgetProps) {
+export function KpiWidget( {panel}: KpiWidgetProps) {
 
   const dataContext: TimeData | undefined = useContext(DataContext);
   const outputId = Object.values(panel.dataSourceOutputs)[0]?.outputId;
   const kpiData = outputId ? (dataContext?.[outputId] as KpiData | undefined) : undefined;
-
-  const {defaultText, defaultTextPosition, fractionDigits} = panelConfiguration;
+  const kpiPanelConfiguration = panel.panelConfiguration as KpiPanelConfiguration
 
 
   return (
@@ -26,18 +24,18 @@ export function KpiWidget( {panel, panelConfiguration}: KpiWidgetProps) {
       panel={panel}
       hasData={!!kpiData}>
       <div className="widget-kpi">
-        {defaultTextPosition === "top" && defaultText && (
-          <span className="kpi-label">{defaultText}</span>
+        {kpiPanelConfiguration.defaultTextPosition === "top" && kpiPanelConfiguration.defaultText && (
+          <span className="kpi-label">{kpiPanelConfiguration.defaultText}</span>
         )}
         <span className="kpi-value">
           {kpiData?.value?.toLocaleString("de-DE", {
-            minimumFractionDigits: fractionDigits,
-            maximumFractionDigits: fractionDigits,
+            minimumFractionDigits: kpiPanelConfiguration.fractionDigits,
+            maximumFractionDigits: kpiPanelConfiguration.fractionDigits,
           })}
           {kpiData?.unit && <span className="kpi-unit">{kpiData.unit}</span>}
         </span>
-        {defaultTextPosition === "bottom" && defaultText && (
-          <span className="kpi-label">{defaultText}</span>
+        {kpiPanelConfiguration.defaultTextPosition === "bottom" && kpiPanelConfiguration.defaultText && (
+          <span className="kpi-label">{kpiPanelConfiguration.defaultText}</span>
         )}
       </div>
     </WidgetBase>
