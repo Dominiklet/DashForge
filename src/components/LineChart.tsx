@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
     CartesianGrid,
     Legend,
@@ -8,118 +9,73 @@ import {
     XAxis,
     YAxis,
 } from "recharts";
-
 import { WidgetBase } from "./WidgetBase";
-
+import { DataContext } from "../Context/DataContext";
+import { MetaDataContext } from "../Context/MetaDataContext";
+import type {Panel} from "../types/layout.ts";
+import type { Meta } from "../types/MetaData";
+import type { TimeSeries } from "../types/DataTypes/TimeSeries";
 import type {
     LegendAdjustment,
     LegendPosition,
-    LineChartWidgetProps,
     LineType,
-    PlotConfiguration,
-    SignalMetadata,
-    TimeSeries,
-    TimeSeriesMap,
-} from "./types";
+    PlotPanelConfiguration,
+} from "../types/PanelConfigurationTypes/PanelConfiguration";
+
+
+interface LineChartWidgetProps {
+    panel: Panel;
+}
 
 interface ResolvedLine {
-    config: PlotConfiguration;
+    config: PlotPanelConfiguration;
     outputId: string;
     series: TimeSeries;
-    metadata: SignalMetadata;
+    metadata: Meta;
     yAxisId: string;
 }
 
 interface ChartRow {
     timestamp: number;
-    [outputId: string]: number;
+    [key: string]: number;
 }
 
 interface ResolvedAxis {
     id: string;
-    unit: string | null;
+    unit: string;
     orientation: "left" | "right";
     useUnitOnAxis: boolean;
     useDefaultAxis: boolean;
     color: string;
 }
 
-function getMockTimeSeriesData(): TimeSeriesMap {
-    return {
-        "b17f0721-4167-427b-b8e8-53c415b8a073": {
-            data: [
-                {
-                    timestamp: 1778054566000,
-                    value: 230.63,
-                },
-                {
-                    timestamp: 1778058155000,
-                    value: 232.54,
-                },
-                {
-                    timestamp: 1778061611000,
-                    value: 234.11,
-                },
-                {
-                    timestamp: 1778066010000,
-                    value: 227.89,
-                },
-                {
-                    timestamp: 1778069977000,
-                    value: 231.1,
-                },
-                {
-                    timestamp: 1778073914000,
-                    value: 232.55,
-                },
-                {
-                    timestamp: 1778078977000,
-                    value: 229.85,
-                },
-                {
-                    timestamp: 1778083206000,
-                    value: 230.12,
-                },
-            ],
-        },
 
-        "68efb8fd-fa23-4978-998c-3c1cc7b4c60c": {
-            data: [
-                {
-                    timestamp: 1778055098000,
-                    value: 230.82,
-                },
-                {
-                    timestamp: 1778058369000,
-                    value: 231.29,
-                },
-                {
-                    timestamp: 1778062397000,
-                    value: 233.47,
-                },
-                {
-                    timestamp: 1778067123000,
-                    value: 233.04,
-                },
-                {
-                    timestamp: 1778070315000,
-                    value: 231.98,
-                },
-                {
-                    timestamp: 1778074145000,
-                    value: 233.36,
-                },
-                {
-                    timestamp: 1778079230000,
-                    value: 233.94,
-                },
-                {
-                    timestamp: 1778083811000,
-                    value: 235.3,
-                },
-            ],
-        },
-    };
+function isTimeSeries(value: unknown): value is TimeSeries {
+    if (
+        typeof value !== "object" ||
+        value === null ||
+        !("id" in value) ||
+        !("data" in value)
+    ) {
+        return false;
+    }
+
+    const candidate = value as TimeSeries;
+
+    if (
+        typeof candidate.id !== "string" ||
+        !Array.isArray(candidate.data)
+    ) {
+        return false;
+    }
+
+    return candidate.data.every(
+        (point) =>
+            typeof point === "object" &&
+            point !== null &&
+            typeof point.timestamp === "number" &&
+            typeof point.value === "number"
+    );
 }
 
 function getStrokeDasharray(
@@ -154,11 +110,9 @@ function formatTimestamp(
 function getLegendLayout(
     position: LegendPosition
 ): "horizontal" | "vertical" {
-    if (position === "LEFT" || position === "RIGHT") {
-        return "vertical";
-    }
-
-    return "horizontal";
+    return position === "LEFT" || position === "RIGHT"
+        ? "vertical"
+        : "horizontal";
 }
 
 function getLegendVerticalAlign(
@@ -230,49 +184,54 @@ function buildAxes(
 ): ResolvedAxis[] {
     const axes = new Map<string, ResolvedAxis>();
 
-    resolvedLines.forEach(({ config, metadata, yAxisId }) => {
-        if (axes.has(yAxisId)) {
-            return;
+    resolvedLines.forEach(
+        ({ config, metadata, yAxisId }) => {
+            if (axes.has(yAxisId)) {
+                return;
+            }
+
+            axes.set(yAxisId, {
+                id: yAxisId,
+                unit: metadata.unit,
+                orientation: "left",
+                useUnitOnAxis:
+                config.axisConfig.useUnitOnAxis,
+                useDefaultAxis:
+                config.axisConfig.useDefaultAxis,
+                color: config.lineConfig.color,
+            });
         }
-
-        axes.set(yAxisId, {
-            id: yAxisId,
-            unit: metadata.unit,
-
-            orientation:  "left",
-
-            useUnitOnAxis: config.axisConfig.useUnitOnAxis,
-            useDefaultAxis: config.axisConfig.useDefaultAxis,
-            color: config.lineConfig.color,
-        });
-    });
+    );
 
     return Array.from(axes.values());
 }
 
 export function LineChartWidget({
-                                    title,
-                                    panelStyle,
-                                    showPanelBar,
-                                    panelConfiguration,
-                                    dataSourceOutputs,
-                                    metadata,
-                                    layoutPos,
+                                    panel,
                                 }: LineChartWidgetProps) {
-    //TODO
-    /**
-     * Aktuell kommen hier Mock-Daten.
-     */
-    const timeSeriesMap = getMockTimeSeriesData();
+    const timeData = useContext(DataContext);
+    const metadata = useContext(MetaDataContext);
 
-    /**
-     * Später wird nur diese Zeile ersetzt, zum Beispiel:
-     *
-     * const timeSeriesMap = useTimeSeriesContext();
-     */
+    const panelConfiguration =
+        panel.panelConfiguration as PlotPanelConfiguration[];
+
+    const dataSourceOutputs = panel.dataSourceOutputs;
+
+    if (!timeData) {
+        throw new Error(
+            "LineChartWidget muss innerhalb eines DataContext.Provider verwendet werden."
+        );
+    }
+
+    if (!metadata) {
+        throw new Error(
+            "LineChartWidget muss innerhalb eines MetaDataContext.Provider verwendet werden."
+        );
+    }
 
     const resolvedLines: ResolvedLine[] =
         panelConfiguration.flatMap((config) => {
+
             const output = dataSourceOutputs[config.id];
 
             if (!output) {
@@ -284,39 +243,58 @@ export function LineChartWidget({
             }
 
             if (!output.isReadable) {
-                return [];
-            }
-
-            if (output.outputType !== "TIMESERIES") {
-                return [];
-            }
-            const series = timeSeriesMap[output.outputId];
-            const signalMetadata = metadata[output.outputId];
-
-            if (!series || series.data.length === 0) {
                 console.warn(
-                    `Keine TimeSeries für outputId ${output.outputId} gefunden.`
+                    `Der Output ${output.outputId} ist nicht lesbar.`
                 );
 
                 return [];
             }
 
-            if (!signalMetadata) {
+            if (output.outputType !== "TIMESERIES") {
+                console.warn(
+                    `Der Output ${output.outputId} besitzt nicht den Typ TIMESERIES.`
+                );
+
+                return [];
+            }
+
+            const panelData = timeData[output.outputId];
+            const signalMeta = metadata[output.outputId];
+
+            if (!panelData || !isTimeSeries(panelData)) {
+                console.warn(
+                    `Keine gültige TimeSeries für outputId ${output.outputId} gefunden.`
+                );
+
+                return [];
+            }
+
+            if (panelData.data.length === 0) {
+                console.warn(
+                    `Die TimeSeries für outputId ${output.outputId} enthält keine Daten.`
+                );
+
+                return [];
+            }
+
+            if (!signalMeta) {
                 console.warn(
                     `Keine Metadaten für outputId ${output.outputId} gefunden.`
                 );
 
                 return [];
             }
+
+
             const yAxisId =
-                signalMetadata.unit ?? output.outputId;
+                signalMeta.unit || output.outputId;
 
             return [
                 {
                     config,
                     outputId: output.outputId,
-                    series,
-                    metadata: signalMetadata,
+                    series: panelData,
+                    metadata: signalMeta,
                     yAxisId,
                 },
             ];
@@ -327,28 +305,28 @@ export function LineChartWidget({
 
     const hasData = chartData.length > 0;
 
+
     const visibleLegendConfig = resolvedLines.find(
         ({ config }) => config.legendConfig.show
     )?.config.legendConfig;
+
 
     const chartTimeZone =
         resolvedLines[0]?.metadata.timeZone;
 
     return (
         <div
-            data-grid-width={layoutPos.w}
-            data-grid-height={layoutPos.h}
-            data-grid-x={layoutPos.x}
-            data-grid-y={layoutPos.y}
+            data-grid-width={panel.layoutPos.w}
+            data-grid-height={panel.layoutPos.h}
+            data-grid-x={panel.layoutPos.x}
+            data-grid-y={panel.layoutPos.y}
             style={{
                 width: "100%",
                 height: "100%",
             }}
         >
             <WidgetBase
-                title={title}
-                panelStyle={panelStyle}
-                showPanelBar={showPanelBar}
+                panel={panel}
                 hasData={hasData}
             >
                 <ResponsiveContainer
@@ -391,10 +369,7 @@ export function LineChartWidget({
                                 }
                                 stroke={axis.color}
                                 tickFormatter={(value) => {
-                                    if (
-                                        !axis.useUnitOnAxis ||
-                                        !axis.unit
-                                    ) {
+                                    if (!axis.useUnitOnAxis) {
                                         return String(value);
                                     }
 
@@ -417,16 +392,14 @@ export function LineChartWidget({
                                 );
 
                                 if (!line) {
-                                    return [value, String(item.dataKey)];
+                                    return [
+                                        value,
+                                        String(item.dataKey),
+                                    ];
                                 }
 
-                                const formattedValue =
-                                    line.metadata.unit
-                                        ? `${value} ${line.metadata.unit}`
-                                        : value;
-
                                 return [
-                                    formattedValue,
+                                    `${value} ${line.metadata.unit}`,
                                     line.metadata.name,
                                 ];
                             }}
@@ -455,8 +428,7 @@ export function LineChartWidget({
                                  yAxisId,
                              }) => {
                                 const legendName =
-                                    config.legendConfig.showUnit &&
-                                    lineMetadata.unit
+                                    config.legendConfig.showUnit
                                         ? `${lineMetadata.name} ${lineMetadata.unit}`
                                         : lineMetadata.name;
 
@@ -467,23 +439,19 @@ export function LineChartWidget({
                                         yAxisId={yAxisId}
                                         name={legendName}
                                         type={
-                                            config.lineConfig.lineInterpolation
+                                            config.lineConfig
+                                                .lineInterpolation
                                         }
-                                        stroke={config.lineConfig.color}
+                                        stroke={
+                                            config.lineConfig.color
+                                        }
                                         strokeWidth={
                                             config.lineConfig.lineSize
                                         }
                                         strokeDasharray={getStrokeDasharray(
                                             config.lineConfig.lineType
                                         )}
-                                        dot={
-                                            config.lineConfig.linePointType ===
-                                            "none"
-                                                ? false
-                                                : {
-                                                    r: 3,
-                                                }
-                                        }
+                                        dot={config.lineConfig.linePointType === "point"}
                                         connectNulls={
                                             config.lineConfig.gap === -1
                                         }
