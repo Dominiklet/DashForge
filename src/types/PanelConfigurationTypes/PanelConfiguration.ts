@@ -58,3 +58,8 @@ export interface PlotPanelConfiguration extends PanelConfiguration {
   legendConfig: LegendConfig;
   commentsConfig: CommentsConfig;
 }
+
+export interface ImagePanelConfiguration extends PanelConfiguration {
+  alignment: "SCALED_TO_PANEL_SIZE" | "ORIGINAL_SIZE" | "CENTERED";
+  originalImageName: string;
+}
