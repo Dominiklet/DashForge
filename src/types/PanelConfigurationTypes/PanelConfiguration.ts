@@ -15,6 +15,7 @@ export interface KpiPanelConfiguration extends PanelConfiguration {
 }
 
 export interface KpiLimitConfiguration {
+  value: number;
   strict: boolean;
   limitBreakText: string;
   limitTextColor: string;
