@@ -4,10 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import type {Layout, Panel} from "../types/layout.ts";
 import { KpiWidget } from "./KpiWidget";
 import { TextWidget } from "./TextWidget";
-import type {
-  KpiPanelConfiguration,
-  TextPanelConfiguration,
-} from "../types/PanelConfigurationTypes/PanelConfiguration.ts";
+import { ImageWidget } from "./ImageWidget";
 
 export interface DashboardInterface {
   layout:Layout;
@@ -16,19 +13,11 @@ export interface DashboardInterface {
 function renderPanel(panel: Panel) {
   switch (panel.panelType) {
     case "KPI":
-      return (
-        <KpiWidget
-          panel={panel}
-          panelConfiguration={panel.panelConfiguration as KpiPanelConfiguration}
-        />
-      );
+      return <KpiWidget panel={panel} />;
     case "TEXT":
-      return (
-        <TextWidget
-          panel={panel}
-          panelConfiguration={panel.panelConfiguration as TextPanelConfiguration}
-        />
-      );
+      return <TextWidget panel={panel} />;
+    case "IMAGE":
+      return <ImageWidget panel={panel} />;
     default:
       // TODO: PlotWidget umsetzen
       return null;
