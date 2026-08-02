@@ -44,10 +44,12 @@ function App() {
     fetchLayout();
   }, []);
 
-  if (!layout) return <div></div>
+    if (!layout || !timeData || !metaData) {
+        return <div>Daten werden geladen …</div>;
+    }
   return (
     <div ref={containerRef} className="fullscreen">
-      <DataContext.Provider value={timeData}>
+      <DataContext.Provider value={timeData}>SA
         <MetaDataContext.Provider value={metaData}>
           <Dashboard layout={layout}></Dashboard>
         </MetaDataContext.Provider>
