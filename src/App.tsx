@@ -15,14 +15,16 @@ function App() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchLayout = async function () {
+    let intervalId: ReturnType<typeof setInterval>;
+
+    async function fetchLayout() {
       try {
         const res = await fetch('http://localhost:3000/layoutJson');
         if (!res.ok) {
           console.error('Layout konnte nicht erreicht werden!');
         }
-        const layout: Layout = await res.json();
-        setLayout(layout);
+        const fetchedLayout: Layout = await res.json();
+        setLayout(fetchedLayout);
 
         const resData: Response = await fetch('http://localhost:3000/timeData');
         if (!resData.ok) {
@@ -37,11 +39,18 @@ function App() {
         }
         const parsedMetaData: MetaData = await metaDataResponse.json();
         setMetaData(parsedMetaData);
+
+        if (!intervalId && fetchedLayout.refreshInterval) {
+          intervalId = setInterval(fetchLayout, fetchedLayout.refreshInterval * 1000);
+        }
       } catch (error) {
         console.error(`Unerwarteter Fehler aufgetreten! \n${error}`)
       }
     }
+
     fetchLayout();
+
+    return () => clearInterval(intervalId);
   }, []);
 
     if (!layout || !timeData || !metaData) {
