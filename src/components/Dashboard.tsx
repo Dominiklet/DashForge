@@ -1,6 +1,6 @@
 import "../App.css";
-import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
-import { useState, useRef, useEffect } from "react";
+import {BsBarChartLine, BsFullscreen, BsFullscreenExit} from "react-icons/bs";
+import {useEffect, useRef, useState} from "react";
 import type {Layout} from "../types/layout.ts";
 
 export interface DashboardInterface {
@@ -30,6 +30,7 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
   }, []);
 
   if(!layout) return <div></div>
+
   return (
     <div ref={containerRef} className="fullscreen">
       <div style={{ color: "#6b6375", textAlign: "left" }}>{layout.explorerpath}</div>
@@ -61,15 +62,14 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
         </button>
       </div>
 
+
       <div
         style={{
           flex: 1,
           position: "relative",
           padding: 16,
-          display: "grid",
-          gap: 12,
+          display: "grid"
         }}>
-
       </div>
     </div>
   );

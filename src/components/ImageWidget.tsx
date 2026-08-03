@@ -1,39 +1,29 @@
-import "./WidgetBase.css";
-import type { PanelStyle } from "../types/panel";
 import { WidgetBase } from "./WidgetBase";
+import type { Panel } from "../types/layout.ts";
+import type { ImagePanelConfiguration } from "../types/PanelConfigurationTypes/PanelConfiguration.ts";
 
 interface ImageWidgetProps {
-  title: string;
-  panelStyle?: Partial<PanelStyle>;
-  imageName: string;
-  alignment?: "SCALED_TO_PANEL_SIZE" | "ORIGINAL_SIZE" | "CENTERED";
-  alt?: string;
+  panel: Panel;
 }
 
-export function ImageWidget({
-  title,
-  panelStyle,
-  imageName,
-  alignment = "SCALED_TO_PANEL_SIZE",
-  alt = "",
-}: ImageWidgetProps) {
-  const imageSrc = `${import.meta.env.BASE_URL}${imageName}`;
+const alignmentClassMap: Record<ImagePanelConfiguration["alignment"], string> = {
+  SCALED_TO_PANEL_SIZE: "image-scaled",
+  ORIGINAL_SIZE: "image-original",
+  CENTERED: "image-centered",
+};
 
-  const imageClassName =
-    alignment === "SCALED_TO_PANEL_SIZE"
-      ? "image-scaled"
-      : alignment === "ORIGINAL_SIZE"
-        ? "image-original"
-        : "image-centered";
+export function ImageWidget({ panel }: ImageWidgetProps) {
+  const panelConfiguration = panel.panelConfiguration as ImagePanelConfiguration;
+  const imageSrc = `${import.meta.env.BASE_URL}${panelConfiguration.originalImageName}`;
 
   return (
-    <WidgetBase
-      title={title}
-      panelStyle={panelStyle}
-      showPanelBar={false}
-      hasData={!!imageName}>
+    <WidgetBase panel={panel} hasData={!!panelConfiguration.originalImageName}>
       <div className="widget-image">
-        <img src={imageSrc} alt={alt || title} className={imageClassName} />
+        <img
+          src={imageSrc}
+          alt={panel.title}
+          className={alignmentClassMap[panelConfiguration.alignment]}
+        />
       </div>
     </WidgetBase>
   );

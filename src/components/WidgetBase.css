@@ -61,6 +61,8 @@
 .image-centered {
   max-width: 97%;
   padding: 2%;
+}
+
 /* ----- MARKDOWN ----- */
 .widget-markdown {
   padding: 1rem;
