@@ -27,6 +27,33 @@ export interface TextPanelConfiguration extends PanelConfiguration {
   code: string;
 }
 
+export type LineType =
+    | "solid"
+    | "dashed"
+    | "dotted";
+
+export type LinePointType =
+    | "none"
+    | "point";
+
+export type LineInterpolation =
+    | "linear"
+    | "monotone"
+    | "step"
+    | "stepBefore"
+    | "stepAfter";
+
+export type LegendPosition =
+    | "TOP"
+    | "BOTTOM"
+    | "LEFT"
+    | "RIGHT";
+
+export type LegendAdjustment =
+    | "START"
+    | "CENTER"
+    | "END";
+
 export interface AxisConfig {
   useUnitOnAxis: boolean;
   useDefaultAxis: boolean;
@@ -36,16 +63,16 @@ export interface LineConfig {
   gap: number;
   color: string;
   lineSize: number;
-  lineType: string;
-  linePointType: string;
-  lineInterpolation: string;
+  lineType: LineType;
+  linePointType: LinePointType;
+  lineInterpolation: LineInterpolation;
 }
 
 export interface LegendConfig {
   show: boolean;
-  position: string;
+  position: LegendPosition;
   showUnit: boolean;
-  adjustment: string;
+  adjustment: LegendAdjustment;
 }
 
 export interface CommentsConfig {
