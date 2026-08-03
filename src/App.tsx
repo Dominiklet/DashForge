@@ -6,6 +6,7 @@ import type {MetaData} from "./types/MetaData.ts";
 import {Dashboard} from "./components/Dashboard.tsx";
 import {DataContext} from "./Context/DataContext.tsx";
 import {MetaDataContext} from "./Context/MetaDataContext.tsx";
+import type { TimeSeries } from "./types/DataTypes/TimeSeries.ts";
 
 
 function App() {
@@ -30,8 +31,16 @@ function App() {
         if (!resData.ok) {
           console.error('Zeitreihendaten konnten nicht erreicht werden!');
         }
-        const parsedTimeData: TimeData = await resData.json();
-        setTimeData(parsedTimeData);
+          const parsedTimeSeries: TimeSeries[] = await resData.json();
+
+          const parsedTimeData: TimeData = Object.fromEntries(
+              parsedTimeSeries.map((series) => [
+                  series.id,
+                  series,
+              ])
+          );
+
+          setTimeData(parsedTimeData);
 
         const metaDataResponse: Response = await fetch('http://localhost:3000/metadata');
         if (!metaDataResponse.ok) {
@@ -51,14 +60,14 @@ function App() {
     fetchLayout();
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [layout?.refreshInterval]);
 
     if (!layout || !timeData || !metaData) {
         return <div>Daten werden geladen …</div>;
     }
   return (
     <div ref={containerRef} className="fullscreen">
-      <DataContext.Provider value={timeData}>SA
+      <DataContext.Provider value={timeData}>
         <MetaDataContext.Provider value={metaData}>
           <Dashboard layout={layout}></Dashboard>
         </MetaDataContext.Provider>

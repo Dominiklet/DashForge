@@ -4,65 +4,180 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class TimeDataSimulator {
 
     private static final String TIME_DATA_URL =
             "http://localhost:3000/timeData";
 
-    private final HttpService httpService;
+        private static final long UPDATE_INTERVAL_SECONDS =
+            5 ;
 
-    public TimeDataSimulator(HttpService httpService) {
+//    private static final long UPDATE_INTERVAL_SECONDS =
+//            5 * 60;
+
+    private final HttpService httpService;
+    private final ValueProvider valueProvider;
+
+    private final ScheduledExecutorService scheduler =
+            Executors.newSingleThreadScheduledExecutor();
+
+    public TimeDataSimulator(
+            HttpService httpService,
+            ValueProvider valueProvider
+    ) {
         this.httpService = httpService;
+        this.valueProvider = valueProvider;
     }
 
-    public void appendDataPoints(
-            long timestamp,
-            Map<String, Double> valuesByOutputId
+    public void start() {
+        scheduler.scheduleAtFixedRate(
+                this::updateAllTimeSeriesSafely,
+                0,
+                UPDATE_INTERVAL_SECONDS,
+                TimeUnit.SECONDS
+        );
+
+        System.out.println(
+                "Simulator gestartet. Aktualisierung alle "
+                        + UPDATE_INTERVAL_SECONDS
+                        + " Sekunden."
+        );
+    }
+
+    private void updateAllTimeSeriesSafely() {
+        try {
+            updateAllTimeSeries();
+        } catch (Exception exception) {
+            System.err.println(
+                    "Fehler beim Aktualisieren der Zeitreihen:"
+            );
+
+            exception.printStackTrace();
+        }
+    }
+
+    public void updateAllTimeSeries() {
+        for (String outputId
+                : valueProvider.getOutputIds()) {
+
+            try {
+                double nextValue =
+                        valueProvider.getNextValue(
+                                outputId
+                        );
+
+                rotateSingleTimeSeries(
+                        outputId,
+                        nextValue
+                );
+
+            } catch (Exception exception) {
+                System.err.println(
+                        "Fehler bei Output-ID "
+                                + outputId
+                                + ": "
+                                + exception.getMessage()
+                );
+            }
+        }
+    }
+
+    private void rotateSingleTimeSeries(
+            String outputId,
+            double newValue
     ) throws Exception {
 
-        JsonNode timeData = httpService.get(TIME_DATA_URL);
+        String seriesUrl =
+                TIME_DATA_URL + "/" + outputId;
 
-        for (Map.Entry<String, Double> entry
-                : valuesByOutputId.entrySet()) {
+        JsonNode timeSeries =
+                httpService.get(seriesUrl);
 
-            String outputId = entry.getKey();
-            double value = entry.getValue();
+        JsonNode dataNode =
+                timeSeries.get("data");
 
-            JsonNode timeSeries = timeData.get(outputId);
-
-            if (timeSeries == null) {
-                System.err.println(
-                        "Keine TimeSeries gefunden für ID: "
-                                + outputId
-                );
-                continue;
-            }
-
-            JsonNode dataNode = timeSeries.get("data");
-
-            if (!(dataNode instanceof ArrayNode dataArray)) {
-                System.err.println(
-                        "Kein gültiges data-Array für ID: "
-                                + outputId
-                );
-                continue;
-            }
-
-            ObjectNode newDataPoint = dataArray.addObject();
-
-            newDataPoint.put("timestamp", timestamp);
-            newDataPoint.put("value", value);
-
-            System.out.println(
-                    "Datenpunkt hinzugefügt: "
+        if (!(dataNode instanceof ArrayNode dataArray)) {
+            throw new IllegalStateException(
+                    "Kein gültiges data-Array für ID: "
                             + outputId
-                            + " = "
-                            + value
             );
         }
 
-        httpService.put(TIME_DATA_URL, timeData);
+        if (dataArray.isEmpty()) {
+            throw new IllegalStateException(
+                    "Das data-Array ist leer für ID: "
+                            + outputId
+            );
+        }
+
+        /*
+         * Ältesten Punkt entfernen.
+         */
+        dataArray.remove(0);
+
+        if (dataArray.isEmpty()) {
+            throw new IllegalStateException(
+                    "Nach dem Entfernen ist kein letzter "
+                            + "Datenpunkt mehr vorhanden: "
+                            + outputId
+            );
+        }
+
+        /*
+         * Timestamp des jetzt letzten Punktes lesen.
+         */
+        JsonNode lastPoint =
+                dataArray.get(dataArray.size() - 1);
+
+        long lastTimestamp =
+                lastPoint.get("timestamp").asLong();
+
+        /*
+         * Neuer Punkt liegt fünf Minuten später.
+         */
+        long nextTimestamp =
+                lastTimestamp + 5 * 60 * 1000L;
+
+        ObjectNode newPoint =
+                dataArray.addObject();
+
+        newPoint.put(
+                "timestamp",
+                nextTimestamp
+        );
+
+        newPoint.put(
+                "value",
+                newValue
+        );
+
+        /*
+         * Nur die konkrete Zeitreihe zurückschreiben.
+         */
+        httpService.put(
+                seriesUrl,
+                timeSeries
+        );
+
+        System.out.println(
+                "Aktualisiert: "
+                        + outputId
+                        + " | "
+                        + nextTimestamp
+                        + " | "
+                        + newValue
+        );
+    }
+
+    public void stop() {
+        scheduler.shutdown();
+
+        System.out.println(
+                "Simulator wurde beendet."
+        );
     }
 }
