@@ -1,27 +1,10 @@
 import "../App.css";
-import { BsBarChartLine, BsFullscreen, BsFullscreenExit } from "react-icons/bs";
-import { useState, useRef, useEffect } from "react";
-import type {Layout, Panel} from "../types/layout.ts";
-import { KpiWidget } from "./KpiWidget";
-import { TextWidget } from "./TextWidget";
-import { ImageWidget } from "./ImageWidget";
+import {BsBarChartLine, BsFullscreen, BsFullscreenExit} from "react-icons/bs";
+import {useEffect, useRef, useState} from "react";
+import type {Layout} from "../types/layout.ts";
 
 export interface DashboardInterface {
   layout:Layout;
-}
-
-function renderPanel(panel: Panel) {
-  switch (panel.panelType) {
-    case "KPI":
-      return <KpiWidget panel={panel} />;
-    case "TEXT":
-      return <TextWidget panel={panel} />;
-    case "IMAGE":
-      return <ImageWidget panel={panel} />;
-    default:
-      // TODO: PlotWidget umsetzen
-      return null;
-  }
 }
 
 export function Dashboard(dashboardInterface: DashboardInterface) {
@@ -85,20 +68,8 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
           flex: 1,
           position: "relative",
           padding: 16,
-          display: "grid",
-          gridTemplateColumns: "repeat(24, 1fr)",
-          gridAutoRows: "40px",
+          display: "grid"
         }}>
-        {layout.panels.map((panel, index) => (
-          <div
-            key={index}
-            style={{
-              gridColumn: `${panel.layoutPos.x + 1} / span ${panel.layoutPos.w}`,
-              gridRow: `${panel.layoutPos.y + 1} / span ${panel.layoutPos.h}`,
-            }}>
-            {renderPanel(panel)}
-          </div>
-        ))}
       </div>
     </div>
   );
