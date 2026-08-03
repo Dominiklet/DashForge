@@ -15,6 +15,7 @@ export interface KpiPanelConfiguration extends PanelConfiguration {
 }
 
 export interface KpiLimitConfiguration {
+  value: number;
   strict: boolean;
   limitBreakText: string;
   limitTextColor: string;
@@ -84,4 +85,9 @@ export interface PlotPanelConfiguration extends PanelConfiguration {
   lineConfig: LineConfig;
   legendConfig: LegendConfig;
   commentsConfig: CommentsConfig;
+}
+
+export interface ImagePanelConfiguration extends PanelConfiguration {
+  alignment: "SCALED_TO_PANEL_SIZE" | "ORIGINAL_SIZE" | "CENTERED";
+  originalImageName: string;
 }
