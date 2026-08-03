@@ -15,7 +15,7 @@ public class TimeDataSimulator {
 
         private static final long UPDATE_INTERVAL_SECONDS =
             5 ;
-
+//TODO
 //    private static final long UPDATE_INTERVAL_SECONDS =
 //            5 * 60;
 
@@ -42,9 +42,9 @@ public class TimeDataSimulator {
         );
 
         System.out.println(
-                "Simulator gestartet. Aktualisierung alle "
+                "Simulator started. updating all "
                         + UPDATE_INTERVAL_SECONDS
-                        + " Sekunden."
+                        + " seconds."
         );
     }
 
@@ -53,7 +53,7 @@ public class TimeDataSimulator {
             updateAllTimeSeries();
         } catch (Exception exception) {
             System.err.println(
-                    "Fehler beim Aktualisieren der Zeitreihen:"
+                    "Error while updating the timedate:"
             );
 
             exception.printStackTrace();
@@ -77,7 +77,7 @@ public class TimeDataSimulator {
 
             } catch (Exception exception) {
                 System.err.println(
-                        "Fehler bei Output-ID "
+                        "Error with Output-ID "
                                 + outputId
                                 + ": "
                                 + exception.getMessage()
@@ -102,43 +102,32 @@ public class TimeDataSimulator {
 
         if (!(dataNode instanceof ArrayNode dataArray)) {
             throw new IllegalStateException(
-                    "Kein gültiges data-Array für ID: "
+                    "no valid data-Array for ID: "
                             + outputId
             );
         }
 
         if (dataArray.isEmpty()) {
             throw new IllegalStateException(
-                    "Das data-Array ist leer für ID: "
+                    "data-Array is empty for ID: "
                             + outputId
             );
         }
 
-        /*
-         * Ältesten Punkt entfernen.
-         */
         dataArray.remove(0);
 
         if (dataArray.isEmpty()) {
             throw new IllegalStateException(
-                    "Nach dem Entfernen ist kein letzter "
-                            + "Datenpunkt mehr vorhanden: "
-                            + outputId
+                    "theres no datapoint left: " + outputId
             );
         }
 
-        /*
-         * Timestamp des jetzt letzten Punktes lesen.
-         */
         JsonNode lastPoint =
                 dataArray.get(dataArray.size() - 1);
 
         long lastTimestamp =
                 lastPoint.get("timestamp").asLong();
 
-        /*
-         * Neuer Punkt liegt fünf Minuten später.
-         */
         long nextTimestamp =
                 lastTimestamp + 5 * 60 * 1000L;
 
@@ -155,29 +144,18 @@ public class TimeDataSimulator {
                 newValue
         );
 
-        /*
-         * Nur die konkrete Zeitreihe zurückschreiben.
-         */
         httpService.put(
                 seriesUrl,
                 timeSeries
         );
 
-        System.out.println(
-                "Aktualisiert: "
-                        + outputId
-                        + " | "
-                        + nextTimestamp
-                        + " | "
-                        + newValue
-        );
     }
 
     public void stop() {
         scheduler.shutdown();
 
         System.out.println(
-                "Simulator wurde beendet."
+                "Simulator stopped."
         );
     }
 }
