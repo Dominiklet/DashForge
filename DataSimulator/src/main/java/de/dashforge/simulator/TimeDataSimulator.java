@@ -13,8 +13,12 @@ public class TimeDataSimulator {
     private static final String TIME_DATA_URL =
             "http://localhost:3000/timeData";
 
-        private static final long UPDATE_INTERVAL_SECONDS =
+    private static final long UPDATE_INTERVAL_SECONDS =
             5 ;
+    private static final String STROMPREIS_TIME_SERIES_ID =
+            "8d40325d-41ff-4806-8bdc-deecbef9d523";
+    private static final String STROMPREIS_KPI_ID =
+            "593a9943-2484-4b62-bde2-05c9ced253bb";
 //TODO
 //    private static final long UPDATE_INTERVAL_SECONDS =
 //            5 * 60;
@@ -61,6 +65,7 @@ public class TimeDataSimulator {
     }
 
     public void updateAllTimeSeries() {
+        Double latestElectricityPrice = null;
         for (String outputId
                 : valueProvider.getOutputIds()) {
 
@@ -74,6 +79,9 @@ public class TimeDataSimulator {
                         outputId,
                         nextValue
                 );
+                if (outputId.equals(STROMPREIS_TIME_SERIES_ID)) {
+                    latestElectricityPrice = nextValue;
+                }
 
             } catch (Exception exception) {
                 System.err.println(
@@ -84,6 +92,36 @@ public class TimeDataSimulator {
                 );
             }
         }
+        if (latestElectricityPrice != null) {
+            try {
+                updateElectricityPriceKpi(
+                        latestElectricityPrice
+                );
+            } catch (Exception exception) {
+                System.err.println(
+                        "Strompreis-KPI could not be updated: "
+                                + exception.getMessage()
+                );
+            }
+        }
+    }
+    private void updateElectricityPriceKpi(
+            double latestPrice
+    ) throws Exception {
+
+        String kpiUrl = TIME_DATA_URL + "/" + STROMPREIS_KPI_ID;
+
+        JsonNode kpiNode = httpService.get(kpiUrl);
+
+        if (!(kpiNode instanceof ObjectNode kpiObject)) {
+            throw new IllegalStateException(
+                    "KPI-Datensatz is not valid."
+            );
+        }
+
+        kpiObject.put("value", latestPrice);
+
+        httpService.put(kpiUrl, kpiObject);
     }
 
     private void rotateSingleTimeSeries(

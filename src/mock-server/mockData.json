@@ -420,23 +420,23 @@
       "id": "b17f0721-4167-427b-b8e8-53c415b8a073",
       "data": [
         {
-          "timestamp": 1778379817000,
+          "timestamp": 1778413117000,
           "value": 231.69
         },
         {
-          "timestamp": 1778380117000,
+          "timestamp": 1778413417000,
           "value": 232.14
         },
         {
-          "timestamp": 1778380417000,
+          "timestamp": 1778413717000,
           "value": 230.98
         },
         {
-          "timestamp": 1778380717000,
+          "timestamp": 1778414017000,
           "value": 231.25
         },
         {
-          "timestamp": 1778381017000,
+          "timestamp": 1778414317000,
           "value": 230.77
         }
       ]
@@ -445,30 +445,30 @@
       "id": "68efb8fd-fa23-4978-998c-3c1cc7b4c60c",
       "data": [
         {
-          "timestamp": 1778379817000,
+          "timestamp": 1778413117000,
           "value": 17.1
         },
         {
-          "timestamp": 1778380117000,
+          "timestamp": 1778413417000,
           "value": 16.8
         },
         {
-          "timestamp": 1778380417000,
+          "timestamp": 1778413717000,
           "value": 15.2
         },
         {
-          "timestamp": 1778380717000,
+          "timestamp": 1778414017000,
           "value": 16.4
         },
         {
-          "timestamp": 1778381017000,
+          "timestamp": 1778414317000,
           "value": 14.9
         }
       ]
     },
     {
       "id": "593a9943-2484-4b62-bde2-05c9ced253bb",
-      "value": 0.262294,
+      "value": 14.9,
       "unit": "€/kWh"
     },
     {
@@ -480,23 +480,23 @@
       "id": "ec088be1-e23a-4c70-b8c7-d9fe62359db0",
       "data": [
         {
-          "timestamp": 1778379817000,
+          "timestamp": 1778413117000,
           "value": 17.1
         },
         {
-          "timestamp": 1778380117000,
+          "timestamp": 1778413417000,
           "value": 16.8
         },
         {
-          "timestamp": 1778380417000,
+          "timestamp": 1778413717000,
           "value": 15.2
         },
         {
-          "timestamp": 1778380717000,
+          "timestamp": 1778414017000,
           "value": 16.4
         },
         {
-          "timestamp": 1778381017000,
+          "timestamp": 1778414317000,
           "value": 14.9
         }
       ]
@@ -505,23 +505,23 @@
       "id": "8d40325d-41ff-4806-8bdc-deecbef9d523",
       "data": [
         {
-          "timestamp": 1778379817000,
+          "timestamp": 1778413117000,
           "value": 17.1
         },
         {
-          "timestamp": 1778380117000,
+          "timestamp": 1778413417000,
           "value": 16.8
         },
         {
-          "timestamp": 1778380417000,
+          "timestamp": 1778413717000,
           "value": 15.2
         },
         {
-          "timestamp": 1778380717000,
+          "timestamp": 1778414017000,
           "value": 16.4
         },
         {
-          "timestamp": 1778381017000,
+          "timestamp": 1778414317000,
           "value": 14.9
         }
       ]
@@ -530,23 +530,23 @@
       "id": "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12",
       "data": [
         {
-          "timestamp": 1778379817000,
+          "timestamp": 1778413117000,
           "value": 17.1
         },
         {
-          "timestamp": 1778380117000,
+          "timestamp": 1778413417000,
           "value": 16.8
         },
         {
-          "timestamp": 1778380417000,
+          "timestamp": 1778413717000,
           "value": 15.2
         },
         {
-          "timestamp": 1778380717000,
+          "timestamp": 1778414017000,
           "value": 16.4
         },
         {
-          "timestamp": 1778381017000,
+          "timestamp": 1778414317000,
           "value": 14.9
         }
       ]
@@ -598,6 +598,5 @@
       "timeZone": "Europe/Berlin",
       "annotations": []
     }
-  },
-  "$schema": "./node_modules/json-server/schema.json"
+  }
 }
