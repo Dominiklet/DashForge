@@ -2,9 +2,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    min-height: 300px;
     border-radius: 4px;
-    overflow: hidden;
     border: 1px solid var(--border);
 }
 
@@ -20,14 +18,6 @@
   color: var(--text-h);
 }
 
-.widget-content {
-  flex: 1;
-
-  display: flex;
-  flex-direction: column;
-    width: 100%;
-    height: 100%;
-}
 
 .widget-no-data {
   flex: 1;
@@ -69,7 +59,6 @@
 /* ----- MARKDOWN ----- */
 .widget-markdown {
   padding: 1rem;
-  line-height: 1.3;
 }
 
 .widget-markdown h1 {
@@ -86,13 +75,11 @@
 
 /* ----- KPI ----- */
 .widget-kpi {
-  padding: 1rem;
   line-height: 1.3;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5px;
 }
 
 .kpi-label {

@@ -1,38 +1,3 @@
-@font-face {
-  font-family: "Open Sans";
-  src: url("assets/font/OpenSans-Light.ttf") format("truetype");
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("assets/font/OpenSans-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("assets/font/OpenSans-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("assets/font/OpenSans-SemiBold.ttf") format("truetype");
-  font-weight: 600;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("assets/font/OpenSans-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-}
-
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -42,24 +7,8 @@
   --accent: #aa3bff;
 
   font-family: "Open Sans", Helvetica, sans-serif;
-  font-size: 1rem;
-  letter-spacing: 0.2px;
   color: var(--text);
-  background: var(--bg);
-  -webkit-font-smoothing: antialiased;
-
-  @media (max-width: 1024px) {
-    font-size: 1rem;
-  }
 }
-#root {
-  width: 2100px;
-  max-width: 100%;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-}
-
 body {
   margin: 20px 25px;
 }
