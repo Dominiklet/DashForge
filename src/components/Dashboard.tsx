@@ -1,16 +1,23 @@
 import "../App.css";
 import {BsBarChartLine, BsFullscreen, BsFullscreenExit} from "react-icons/bs";
-import {useEffect, useRef, useState} from "react";
-import type {Layout} from "../types/layout.ts";
+import {useEffect, useState} from "react";
+import type {Layout, Panel} from "../types/layout.ts";
+import {type LayoutItem, ReactGridLayout, useContainerWidth} from "react-grid-layout";
+import {TextWidget} from "./TextWidget.tsx";
+import {LineChartWidget} from "./LineChart.tsx";
+import {KpiWidget} from "./KpiWidget.tsx";
 
 export interface DashboardInterface {
-  layout:Layout;
+  layout: Layout;
 }
 
 export function Dashboard(dashboardInterface: DashboardInterface) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const layout = dashboardInterface.layout;
-  const containerRef = useRef<HTMLDivElement>(null);
+  const panels = layout.panels;
+  const {width, containerRef} = useContainerWidth();
+  const gridLayout: LayoutItem[] = [];
+  const col = 24;
 
   const toggleFullscreen = async () => {
     if (!document.fullscreenElement) {
@@ -21,6 +28,19 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
       setIsFullscreen(false);
     }
   };
+
+  const generateGridLayout = function () {
+    panels.forEach((panel, index) =>
+      gridLayout.push({
+        x: panel.layoutPos.x,
+        y: panel.layoutPos.y,
+        w: panel.layoutPos.w,
+        h: panel.layoutPos.h,
+        i: index.toString()
+      }));
+  }
+  generateGridLayout();
+
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -29,48 +49,60 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
     return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
-  if(!layout) return <div></div>
+  const renderPanel = function (panel: Panel) {
+    switch (panel.panelType) {
+      case 'KPI' :
+        return <div key={panel.id} data-grid={getGrid(panel)} ><KpiWidget panel={panel}></KpiWidget></div>
+      case 'PLOT' :
+        return <div key={panel.id} data-grid={getGrid(panel)} ><LineChartWidget panel={panel}></LineChartWidget></div>
+      case 'TEXT' :
+        return <div key={panel.id} data-grid={getGrid(panel)}> <TextWidget panel={panel}></TextWidget></div>
+      case 'IMAGE' :
+        return <div key={panel.id} data-grid={getGrid(panel)} style={{backgroundColor: 'blue'}}></div>
+      default :
+        return <div></div>
+    }
+  }
+  if (!layout) return <div></div>
 
-  return (
-    <div ref={containerRef} className="fullscreen">
-      <div style={{ color: "#6b6375", textAlign: "left" }}>{layout.explorerpath}</div>
-      <hr />
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <BsBarChartLine size={16} color="#aa3bff" />
-          <span style={{ fontWeight: 600, color: "#08060d" }}>{layout.name}</span>
-        </div>
-        <button
-          onClick={toggleFullscreen}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "#6b6375",
-            marginTop: 2,
-          }}>
-          {isFullscreen ? (
-            <BsFullscreenExit size={16} />
-          ) : (
-            <BsFullscreen size={16} />
-          )}
-        </button>
+  const getGrid = function (panel: Panel) {
+    return {x: panel.layoutPos.x, y: panel.layoutPos.y, w: panel.layoutPos.w, h: panel.layoutPos.h, i: panel.id}
+  }
+
+  return <div ref={containerRef} className="fullscreen">
+    <div style={{color: "#6b6375", textAlign: "left"}}>{layout.explorerpath}</div>
+    <hr/>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}>
+      <div style={{display: "flex", alignItems: "center", gap: 8}}>
+        <BsBarChartLine size={16} color="#aa3bff"/>
+        <span style={{fontWeight: 600, color: "#08060d"}}>{layout.name}</span>
       </div>
-
-
-      <div
+      <button
+        onClick={toggleFullscreen}
         style={{
-          flex: 1,
-          position: "relative",
-          padding: 16,
-          display: "grid"
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          color: "#6b6375",
+          marginTop: 2,
         }}>
-      </div>
+        {isFullscreen ? (
+          <BsFullscreenExit size={16}/>
+        ) : (
+          <BsFullscreen size={16}/>
+        )}
+      </button>
     </div>
-  );
+
+    <ReactGridLayout
+      width={width}
+      gridConfig={{cols: col, rowHeight: width / col / 2}}>
+      {panels.map((panel) => renderPanel(panel))}
+    </ReactGridLayout>
+  </div>
 }

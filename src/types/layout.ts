@@ -10,6 +10,7 @@ export interface Layout {
 }
 
 export interface Panel {
+  id: string;
   panelType: string;
   panelStyle: PanelStyle;
   panelConfiguration: PanelConfiguration | PanelConfiguration[];
