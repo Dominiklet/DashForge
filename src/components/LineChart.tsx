@@ -23,6 +23,7 @@ import type {
 } from "../types/PanelConfigurationTypes/PanelConfiguration";
 
 
+
 interface LineChartWidgetProps {
     panel: Panel;
 }
@@ -348,13 +349,27 @@ export function LineChartWidget({
                             dataKey="timestamp"
                             type="number"
                             scale="time"
+                            minTickGap={40}
                             domain={["dataMin", "dataMax"]}
-                            tickFormatter={(value) =>
-                                formatTimestamp(
-                                    Number(value),
-                                    chartTimeZone
-                                )
-                            }
+                            tickFormatter={(value, index) => {
+                                const timestamp = Number(value);
+
+                                if (index === 0) {
+                                    return new Intl.DateTimeFormat("de-DE", {
+                                        day: "2-digit",
+                                        month: "2-digit",
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        timeZone: chartTimeZone,
+                                    }).format(new Date(timestamp));
+                                }
+
+                                return new Intl.DateTimeFormat("de-DE", {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    timeZone: chartTimeZone,
+                                }).format(new Date(timestamp));
+                            }}
                         />
 
                         {axes.map((axis) => (

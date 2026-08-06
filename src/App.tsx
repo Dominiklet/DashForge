@@ -6,6 +6,7 @@ import type {MetaData} from "./types/MetaData.ts";
 import {Dashboard} from "./components/Dashboard.tsx";
 import {DataContext} from "./Context/DataContext.tsx";
 import {MetaDataContext} from "./Context/MetaDataContext.tsx";
+import type { TimeSeries } from "./types/DataTypes/TimeSeries.ts";
 
 
 function App() {
@@ -15,21 +16,31 @@ function App() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchLayout = async function () {
+    let intervalId: ReturnType<typeof setInterval>;
+
+    async function fetchLayout() {
       try {
         const res = await fetch('http://localhost:3000/layoutJson');
         if (!res.ok) {
           console.error('Layout konnte nicht erreicht werden!');
         }
-        const layout: Layout = await res.json();
-        setLayout(layout);
+        const fetchedLayout: Layout = await res.json();
+        setLayout(fetchedLayout);
 
         const resData: Response = await fetch('http://localhost:3000/timeData');
         if (!resData.ok) {
           console.error('Zeitreihendaten konnten nicht erreicht werden!');
         }
-        const parsedTimeData: TimeData = await resData.json();
-        setTimeData(parsedTimeData);
+          const parsedTimeSeries: TimeSeries[] = await resData.json();
+
+          const parsedTimeData: TimeData = Object.fromEntries(
+              parsedTimeSeries.map((series) => [
+                  series.id,
+                  series,
+              ])
+          );
+
+          setTimeData(parsedTimeData);
 
         const metaDataResponse: Response = await fetch('http://localhost:3000/metadata');
         if (!metaDataResponse.ok) {
@@ -37,14 +48,23 @@ function App() {
         }
         const parsedMetaData: MetaData = await metaDataResponse.json();
         setMetaData(parsedMetaData);
+
+        if (!intervalId && fetchedLayout.refreshInterval) {
+          intervalId = setInterval(fetchLayout, fetchedLayout.refreshInterval * 1000);
+        }
       } catch (error) {
         console.error(`Unerwarteter Fehler aufgetreten! \n${error}`)
       }
     }
-    fetchLayout();
-  }, []);
 
-  if (!layout) return <div></div>
+    fetchLayout();
+
+    return () => clearInterval(intervalId);
+  }, [layout?.refreshInterval]);
+
+    if (!layout || !timeData || !metaData) {
+        return <div>Daten werden geladen …</div>;
+    }
   return (
     <div ref={containerRef} className="fullscreen">
       <DataContext.Provider value={timeData}>
