@@ -121,8 +121,7 @@
           "selfManagedMargins": null
         },
         "panelConfiguration": {
-          "alignment": "SCALED_TO_PANEL_SIZE",
-          "originalImageName": "Gemini_Generated.png"
+          "alignment": "SCALED_TO_PANEL_SIZE"
         },
         "timeRange": null,
         "title": "Neues Bild",
@@ -136,7 +135,15 @@
           "y": 4
         },
         "refreshWithDashboard": null,
-        "dataSourceOutputs": {}
+        "dataSourceOutputs": {
+          "a15836d5-f485-47c2-a6c5-add71570fe45": {
+            "outputId": "a15836d5-f485-47c2-a6c5-add71570fe45",
+            "referenceId": "a15836d5-f485-47c2-a6c5-add71570fe45",
+            "outputType": "IMAGE",
+            "nodeType": "SIGNAL",
+            "isReadable": true
+          }
+        }
       },
       {
         "id": "4e52e77b-31e5-42f4-b4fb-83b349a659e7",
@@ -417,53 +424,42 @@
   },
   "timeData": [
     {
+      "id": "9d391bad-0fe7-4294-b025-f37e5a272a4c",
+      "title": "Dashboard Windkraftwerk 1",
+      "content": "**Dashboard Windkraftwerk 1**\n\nEin technisches Überwachungs-Dashboard zur Analyse von Windgeschwindigkeit, Netzspannung und aktuellen Strompreisen für erneuerbare Energien."
+    },
+    {
       "id": "b17f0721-4167-427b-b8e8-53c415b8a073",
       "data": [
-        {
-          "timestamp": 1778413117000,
-          "value": 231.69
-        },
-        {
-          "timestamp": 1778413417000,
-          "value": 232.14
-        },
-        {
-          "timestamp": 1778413717000,
-          "value": 230.98
-        },
-        {
-          "timestamp": 1778414017000,
-          "value": 231.25
-        },
-        {
-          "timestamp": 1778414317000,
-          "value": 230.77
-        }
+        { "timestamp": 1778413117000, "value": 231.69 },
+        { "timestamp": 1778413417000, "value": 232.14 },
+        { "timestamp": 1778413717000, "value": 230.98 },
+        { "timestamp": 1778414017000, "value": 231.25 },
+        { "timestamp": 1778414317000, "value": 230.77 }
       ]
     },
     {
       "id": "68efb8fd-fa23-4978-998c-3c1cc7b4c60c",
       "data": [
-        {
-          "timestamp": 1778413117000,
-          "value": 17.1
-        },
-        {
-          "timestamp": 1778413417000,
-          "value": 16.8
-        },
-        {
-          "timestamp": 1778413717000,
-          "value": 15.2
-        },
-        {
-          "timestamp": 1778414017000,
-          "value": 16.4
-        },
-        {
-          "timestamp": 1778414317000,
-          "value": 14.9
-        }
+        { "timestamp": 1778413117000, "value": 17.1 },
+        { "timestamp": 1778413417000, "value": 16.8 },
+        { "timestamp": 1778413717000, "value": 15.2 },
+        { "timestamp": 1778414017000, "value": 16.4 },
+        { "timestamp": 1778414317000, "value": 14.9 }
+      ]
+    },
+    {
+      "id": "a15836d5-f485-47c2-a6c5-add71570fe45",
+      "base64": "data:image/png;base64, 10m Zeichen hier"
+    },
+    {
+      "id": "8d40325d-41ff-4806-8bdc-deecbef9d523",
+      "data": [
+        { "timestamp": 1778413117000, "value": 17.1 },
+        { "timestamp": 1778413417000, "value": 16.8 },
+        { "timestamp": 1778413717000, "value": 15.2 },
+        { "timestamp": 1778414017000, "value": 16.4 },
+        { "timestamp": 1778414317000, "value": 14.9 }
       ]
     },
     {
@@ -472,83 +468,23 @@
       "unit": "€/kWh"
     },
     {
-      "id": "9d391bad-0fe7-4294-b025-f37e5a272a4c",
-      "title": "Dashboard Windkraftwerk 1",
-      "content": "**Dashboard Windkraftwerk 1**\n\nEin technisches Überwachungs-Dashboard zur Analyse von Windgeschwindigkeit, Netzspannung und aktuellen Strompreisen für erneuerbare Energien."
+      "id": "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12",
+      "data": [
+        { "timestamp": 1778413117000, "value": 17.1 },
+        { "timestamp": 1778413417000, "value": 16.8 },
+        { "timestamp": 1778413717000, "value": 15.2 },
+        { "timestamp": 1778414017000, "value": 16.4 },
+        { "timestamp": 1778414317000, "value": 14.9 }
+      ]
     },
     {
       "id": "ec088be1-e23a-4c70-b8c7-d9fe62359db0",
       "data": [
-        {
-          "timestamp": 1778413117000,
-          "value": 17.1
-        },
-        {
-          "timestamp": 1778413417000,
-          "value": 16.8
-        },
-        {
-          "timestamp": 1778413717000,
-          "value": 15.2
-        },
-        {
-          "timestamp": 1778414017000,
-          "value": 16.4
-        },
-        {
-          "timestamp": 1778414317000,
-          "value": 14.9
-        }
-      ]
-    },
-    {
-      "id": "8d40325d-41ff-4806-8bdc-deecbef9d523",
-      "data": [
-        {
-          "timestamp": 1778413117000,
-          "value": 17.1
-        },
-        {
-          "timestamp": 1778413417000,
-          "value": 16.8
-        },
-        {
-          "timestamp": 1778413717000,
-          "value": 15.2
-        },
-        {
-          "timestamp": 1778414017000,
-          "value": 16.4
-        },
-        {
-          "timestamp": 1778414317000,
-          "value": 14.9
-        }
-      ]
-    },
-    {
-      "id": "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12",
-      "data": [
-        {
-          "timestamp": 1778413117000,
-          "value": 17.1
-        },
-        {
-          "timestamp": 1778413417000,
-          "value": 16.8
-        },
-        {
-          "timestamp": 1778413717000,
-          "value": 15.2
-        },
-        {
-          "timestamp": 1778414017000,
-          "value": 16.4
-        },
-        {
-          "timestamp": 1778414317000,
-          "value": 14.9
-        }
+        { "timestamp": 1778413117000, "value": 17.1 },
+        { "timestamp": 1778413417000, "value": 16.8 },
+        { "timestamp": 1778413717000, "value": 15.2 },
+        { "timestamp": 1778414017000, "value": 16.4 },
+        { "timestamp": 1778414317000, "value": 14.9 }
       ]
     }
   ],
