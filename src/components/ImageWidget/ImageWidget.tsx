@@ -1,6 +1,5 @@
-import { WidgetBase } from "./WidgetBase";
-import type { Panel } from "../types/layout.ts";
-import type { ImagePanelConfiguration } from "../types/PanelConfigurationTypes/PanelConfiguration.ts";
+import type { Panel } from "../../types/layout.ts";
+import type { ImagePanelConfiguration } from "../../types/PanelConfigurationTypes/PanelConfiguration.ts";
 
 interface ImageWidgetProps {
   panel: Panel;
@@ -17,7 +16,6 @@ export function ImageWidget({ panel }: ImageWidgetProps) {
   const imageSrc = `${import.meta.env.BASE_URL}${panelConfiguration.originalImageName}`;
 
   return (
-    <WidgetBase panel={panel} hasData={!!panelConfiguration.originalImageName}>
       <div className="widget-image">
         <img
           src={imageSrc}
@@ -25,6 +23,5 @@ export function ImageWidget({ panel }: ImageWidgetProps) {
           className={alignmentClassMap[panelConfiguration.alignment]}
         />
       </div>
-    </WidgetBase>
   );
 }

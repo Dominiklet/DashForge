@@ -3,9 +3,7 @@ import {BsBarChartLine, BsFullscreen, BsFullscreenExit} from "react-icons/bs";
 import {useEffect, useState} from "react";
 import type {Layout, Panel} from "../types/layout.ts";
 import {type LayoutItem, ReactGridLayout, useContainerWidth} from "react-grid-layout";
-import {TextWidget} from "./TextWidget.tsx";
-import {LineChartWidget} from "./LineChart.tsx";
-import {KpiWidget} from "./KpiWidget.tsx";
+import {WidgetBase} from "./WidgetBase.tsx";
 
 export interface DashboardInterface {
   layout: Layout;
@@ -49,20 +47,7 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
     return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
-  const renderPanel = function (panel: Panel) {
-    switch (panel.panelType) {
-      case 'KPI' :
-        return <div key={panel.id} data-grid={getGrid(panel)} ><KpiWidget panel={panel}></KpiWidget></div>
-      case 'PLOT' :
-        return <div key={panel.id} data-grid={getGrid(panel)} ><LineChartWidget panel={panel}></LineChartWidget></div>
-      case 'TEXT' :
-        return <div key={panel.id} data-grid={getGrid(panel)}> <TextWidget panel={panel}></TextWidget></div>
-      case 'IMAGE' :
-        return <div key={panel.id} data-grid={getGrid(panel)} style={{backgroundColor: 'blue'}}></div>
-      default :
-        return <div></div>
-    }
-  }
+
   if (!layout) return <div></div>
 
   const getGrid = function (panel: Panel) {
@@ -102,7 +87,11 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
     <ReactGridLayout
       width={width}
       gridConfig={{cols: col, rowHeight: width / col / 2}}>
-      {panels.map((panel) => renderPanel(panel))}
+      {panels.map(panel =>
+        <div key={panel.id} data-grid={getGrid(panel)} >
+          <WidgetBase panel={panel}></WidgetBase>
+        </div>
+      )}
     </ReactGridLayout>
   </div>
 }

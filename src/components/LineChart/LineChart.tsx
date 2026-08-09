@@ -1,27 +1,16 @@
-import { useContext } from "react";
-import {
-    CartesianGrid,
-    Legend,
-    Line,
-    LineChart,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis,
-} from "recharts";
-import { WidgetBase } from "./WidgetBase";
-import { DataContext } from "../Context/DataContext";
-import { MetaDataContext } from "../Context/MetaDataContext";
-import type {Panel} from "../types/layout.ts";
-import type { Meta } from "../types/MetaData";
-import type { TimeSeries } from "../types/DataTypes/TimeSeries";
+import {useContext} from "react";
+import {CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis,} from "recharts";
+import {DataContext} from "../../Context/DataContext";
+import {MetaDataContext} from "../../Context/MetaDataContext";
+import type {Panel} from "../../types/layout.ts";
+import type {Meta} from "../../types/MetaData";
+import type {TimeSeries} from "../../types/DataTypes/TimeSeries";
 import type {
     LegendAdjustment,
     LegendPosition,
     LineType,
     PlotPanelConfiguration,
-} from "../types/PanelConfigurationTypes/PanelConfiguration";
-
+} from "../../types/PanelConfigurationTypes/PanelConfiguration";
 
 
 interface LineChartWidgetProps {
@@ -304,7 +293,7 @@ export function LineChartWidget({
     const chartData = buildChartData(resolvedLines);
     const axes = buildAxes(resolvedLines);
 
-    const hasData = chartData.length > 0;
+    //const hasData = chartData.length > 0;
 
 
     const visibleLegendConfig = resolvedLines.find(
@@ -326,10 +315,6 @@ export function LineChartWidget({
                 height: "100%",
             }}
         >
-            <WidgetBase
-                panel={panel}
-                hasData={hasData}
-            >
                 <ResponsiveContainer
                     width="100%"
                     height={350}
@@ -482,7 +467,6 @@ export function LineChartWidget({
                         )}
                     </LineChart>
                 </ResponsiveContainer>
-            </WidgetBase>
         </div>
     );
 }
