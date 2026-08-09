@@ -2,8 +2,19 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100%;
+    min-height: 0;
     border-radius: 4px;
     border: 1px solid var(--border);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.widget-content {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .widget-header {
@@ -33,27 +44,35 @@
 
 /* ----- IMAGE ----- */
 .widget-image {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .image-scaled {
-  max-width: 97%;
-  padding: 2%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .image-original {
-  max-width: 97%;
-  padding: 2%;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
 }
 
 .image-centered {
-  max-width: 97%;
-  padding: 2%;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
 }
 
 /* ----- MARKDOWN ----- */

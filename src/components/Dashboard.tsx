@@ -6,6 +6,7 @@ import {type LayoutItem, ReactGridLayout, useContainerWidth} from "react-grid-la
 import {TextWidget} from "./TextWidget.tsx";
 import {LineChartWidget} from "./LineChart.tsx";
 import {KpiWidget} from "./KpiWidget.tsx";
+import {ImageWidget} from "./ImageWidget.tsx";
 
 export interface DashboardInterface {
   layout: Layout;
@@ -58,7 +59,7 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
       case 'TEXT' :
         return <div key={panel.id} data-grid={getGrid(panel)}> <TextWidget panel={panel}></TextWidget></div>
       case 'IMAGE' :
-        return <div key={panel.id} data-grid={getGrid(panel)} style={{backgroundColor: 'blue'}}></div>
+          return <div key={panel.id} data-grid={getGrid(panel)} > <ImageWidget panel={panel}></ImageWidget> </div>
       default :
         return <div></div>
     }
