@@ -26,4 +26,5 @@ dist-ssr
 *.sln
 *.sw?
 /DataSimulator/target/
+/src/mock-server/mockData.json
 
