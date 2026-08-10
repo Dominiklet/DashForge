@@ -1,10 +1,13 @@
-import {WidgetBase} from "./WidgetBase";
-import type {Panel} from "../types/layout.ts";
+import type {Panel} from "../../types/layout.ts";
 import {useContext} from "react";
-import {DataContext} from "../Context/DataContext.tsx";
-import type {TimeData} from "../types/TimeData.ts";
-import type {KpiData} from "../types/DataTypes/KpiData.ts";
-import type {KpiLimitConfiguration, KpiPanelConfiguration} from "../types/PanelConfigurationTypes/PanelConfiguration.ts";
+import {DataContext} from "../../Context/DataContext.tsx";
+import "./KpiWidget.css"
+import type {TimeData} from "../../types/TimeData.ts";
+import type {KpiData} from "../../types/DataTypes/KpiData.ts";
+import type {
+  KpiLimitConfiguration,
+  KpiPanelConfiguration
+} from "../../types/PanelConfigurationTypes/PanelConfiguration.ts";
 
 interface KpiWidgetProps {
   panel: Panel
@@ -39,9 +42,6 @@ export function KpiWidget( {panel}: KpiWidgetProps) {
   const textColor = breachedLimit?.limitTextColor;
 
   return (
-    <WidgetBase
-      panel={panel}
-      hasData={!!kpiData}>
       <div className="widget-kpi" style={{backgroundColor: breachedLimit?.limitBackgroundColor}}>
         {kpiPanelConfiguration.defaultTextPosition === "top" && label && (
           <span className="kpi-label" style={{color: textColor}}>{label}</span>
@@ -59,6 +59,5 @@ export function KpiWidget( {panel}: KpiWidgetProps) {
           <span className="kpi-label" style={{color: textColor}}>{label}</span>
         )}
       </div>
-    </WidgetBase>
   );
 }

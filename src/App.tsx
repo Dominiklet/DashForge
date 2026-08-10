@@ -62,7 +62,7 @@ function App() {
     return () => clearInterval(intervalId);
   }, [layout?.refreshInterval]);
 
-    if (!layout || !timeData || !metaData) {
+    if (!layout || !metaData || !timeData) {
         return <div>Daten werden geladen …</div>;
     }
   return (
