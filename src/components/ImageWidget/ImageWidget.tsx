@@ -1,5 +1,9 @@
 import type { Panel } from "../../types/layout.ts";
 import type { ImagePanelConfiguration } from "../../types/PanelConfigurationTypes/PanelConfiguration.ts";
+import type {TimeData} from "../../types/TimeData.ts";
+import {useContext} from "react";
+import {DataContext} from "../../Context/DataContext.tsx";
+import type {ImageData} from "../../types/DataTypes/ImageData.ts";
 
 interface ImageWidgetProps {
     panel: Panel;

@@ -3,6 +3,7 @@ import type {Panel} from "../types/layout.ts";
 import {TextWidget} from "./TextWidget/TextWidget.tsx";
 import {KpiWidget} from "./KpiWidget/KpiWidget.tsx";
 import { LineChartWidget } from "./LineChart/LineChart.tsx";
+import {ImageWidget} from "./ImageWidget/ImageWidget.tsx";
 
 interface WidgetBaseProps {
   panel: Panel;
@@ -33,7 +34,7 @@ export function WidgetBase(widgetBaseProps: WidgetBaseProps) {
       case 'TEXT' :
         return <TextWidget panel={panel}></TextWidget>
       case 'IMAGE' :
-        return <div></div>
+        return <ImageWidget panel={panel}></ImageWidget>
       default :
         return <div></div>
     }
