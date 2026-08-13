@@ -2,8 +2,19 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    border-radius: 4px;
+    height: 100%;
     border: 1px solid var(--border);
+    box-sizing: border-box;
+    flex-grow: 1;
+    background-color: #F8F8F8;
+    overflow: hidden;
+}
+.widget-content {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .widget-header {
@@ -18,7 +29,6 @@
   color: var(--text-h);
 }
 
-
 .widget-no-data {
   flex: 1;
   display: flex;
@@ -29,73 +39,4 @@
   color: var(--text);
   padding: 24px;
   font-size: 0.9rem;
-}
-
-/* ----- IMAGE ----- */
-.widget-image {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.image-scaled {
-  max-width: 97%;
-  padding: 2%;
-}
-
-.image-original {
-  max-width: 97%;
-  padding: 2%;
-}
-
-.image-centered {
-  max-width: 97%;
-  padding: 2%;
-}
-
-/* ----- MARKDOWN ----- */
-.widget-markdown {
-  padding: 1rem;
-}
-
-.widget-markdown h1 {
-  color: var(--text-h);
-  margin: 0.5em 0;
-  font-size: 1.3rem;
-}
-
-.widget-markdown p {
-  color: var(--text-h);
-  margin: 0.5em 0.8rem;
-  font-size: 1.2rem;
-}
-
-/* ----- KPI ----- */
-.widget-kpi {
-  line-height: 1.3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.kpi-label {
-  font-size: 1.3em;
-  color: var(--text-h);
-}
-
-.kpi-value {
-  font-size: 3em;
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-.kpi-unit {
-  font-size: 0.35em;
-  font-weight: 400;
-  margin-left: 4px;
-  color: var(--text);
 }

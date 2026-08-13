@@ -1,37 +1,19 @@
-import { BsExclamationCircle } from "react-icons/bs";
 import "./WidgetBase.css";
 import type {Panel} from "../types/layout.ts";
-import type { ReactNode } from "react";
-
-function hexToRgba(hex: string | null, opacity: number): string | undefined {
-  if (!hex) return undefined;
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${opacity / 100})`;
-}
-
-function WidgetNoData() {
-  return (
-    <div className="widget-no-data">
-      <BsExclamationCircle size={24} />
-      <span>Keine Daten verfügbar</span>
-    </div>
-  );
-}
+import {TextWidget} from "./TextWidget/TextWidget.tsx";
+import {KpiWidget} from "./KpiWidget/KpiWidget.tsx";
+import { LineChartWidget } from "./LineChart/LineChart.tsx";
+import {ImageWidget} from "./ImageWidget/ImageWidget.tsx";
 
 interface WidgetBaseProps {
   panel: Panel;
-  hasData: boolean;
-  children: ReactNode;
 }
 
 export function WidgetBase(widgetBaseProps: WidgetBaseProps) {
-  const title = widgetBaseProps.panel.title;
-  const panelStyle = widgetBaseProps.panel.panelStyle;
-  const showPanelBar  = widgetBaseProps.panel.showPanelBar;
-
-  const background = hexToRgba(panelStyle.backgroundColor,1);
+  const panel = widgetBaseProps.panel;
+  const title = panel.title;
+  const panelStyle = panel.panelStyle;
+  const showPanelBar  = panel.showPanelBar;
 
   const margin =
     !panelStyle.selfManagedMargins
@@ -43,11 +25,26 @@ export function WidgetBase(widgetBaseProps: WidgetBaseProps) {
         }
       : {};
 
+  const renderPanel = function () {
+    switch (panel.panelType) {
+      case 'KPI' :
+        return  <KpiWidget panel={panel}></KpiWidget>
+      case 'PLOT' :
+        return <LineChartWidget panel={panel}></LineChartWidget>
+      case 'TEXT' :
+        return <TextWidget panel={panel}></TextWidget>
+      case 'IMAGE' :
+        return <ImageWidget panel={panel}></ImageWidget>
+      default :
+        return <div></div>
+    }
+  }
+
   return (
     <div
       className="widget-base"
       style={{
-        backgroundColor: background,
+        backgroundColor: panelStyle.backgroundColor != null ? panelStyle.backgroundColor : "#F8F8F8",
         color: panelStyle.textColor ?? undefined,
         ...margin,
       }}
@@ -57,8 +54,8 @@ export function WidgetBase(widgetBaseProps: WidgetBaseProps) {
           <span className="widget-title">{title}</span>
         </div>
       )}
-      <div className="widget-content">
-        {widgetBaseProps.hasData ? widgetBaseProps.children : <WidgetNoData />}
+      <div>
+        {renderPanel()}
       </div>
     </div>
   );
