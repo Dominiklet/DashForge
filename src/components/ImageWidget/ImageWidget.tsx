@@ -4,6 +4,7 @@ import type {TimeData} from "../../types/TimeData.ts";
 import {useContext} from "react";
 import {DataContext} from "../../Context/DataContext.tsx";
 import type {ImageData} from "../../types/DataTypes/ImageData.ts";
+import "./ImageWidget.css";
 
 interface ImageWidgetProps {
     panel: Panel;

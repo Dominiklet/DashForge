@@ -1,24 +1,15 @@
-/* ----- IMAGE ----- */
 .widget-image {
-    flex: 1;
-    min-height: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
 }
 
 .image-scaled {
-    max-width: 97%;
-    padding: 2%;
-}
-
-.image-original {
-    max-width: 97%;
-    padding: 2%;
-}
-
-.image-centered {
-    max-width: 97%;
-    padding: 2%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }

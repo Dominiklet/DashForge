@@ -1,9 +1,9 @@
 import "./WidgetBase.css";
-import type {Panel} from "../types/layout.ts";
-import {TextWidget} from "./TextWidget/TextWidget.tsx";
-import {KpiWidget} from "./KpiWidget/KpiWidget.tsx";
-import { LineChartWidget } from "./LineChart/LineChart.tsx";
-import {ImageWidget} from "./ImageWidget/ImageWidget.tsx";
+import type {Panel} from "../../types/layout.ts";
+import {TextWidget} from "../TextWidget/TextWidget.tsx";
+import {KpiWidget} from "../KpiWidget/KpiWidget.tsx";
+import { LineChartWidget } from "../LineChart/LineChart.tsx";
+import {ImageWidget} from "../ImageWidget/ImageWidget.tsx";
 
 interface WidgetBaseProps {
   panel: Panel;
@@ -54,9 +54,9 @@ export function WidgetBase(widgetBaseProps: WidgetBaseProps) {
           <span className="widget-title">{title}</span>
         </div>
       )}
-      <div>
-        {renderPanel()}
-      </div>
+        <div className="widget-content">
+            {renderPanel()}
+        </div>
     </div>
   );
 }
