@@ -2,7 +2,7 @@ import "../App.css";
 import {BsBarChartLine, BsFullscreen, BsFullscreenExit} from "react-icons/bs";
 import {useEffect, useState} from "react";
 import type {Layout, Panel} from "../types/layout.ts";
-import {type LayoutItem, ReactGridLayout, useContainerWidth} from "react-grid-layout";
+import {ReactGridLayout, useContainerWidth} from "react-grid-layout";
 import {WidgetBase} from "./WidgetBase.tsx";
 
 export interface DashboardInterface {
@@ -14,7 +14,6 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
   const layout = dashboardInterface.layout;
   const panels = layout.panels;
   const {width, containerRef} = useContainerWidth();
-  const gridLayout: LayoutItem[] = [];
   const col = 24;
 
   const toggleFullscreen = async () => {
@@ -26,18 +25,6 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
       setIsFullscreen(false);
     }
   };
-
-  const generateGridLayout = function () {
-    panels.forEach((panel, index) =>
-      gridLayout.push({
-        x: panel.layoutPos.x,
-        y: panel.layoutPos.y,
-        w: panel.layoutPos.w,
-        h: panel.layoutPos.h,
-        i: index.toString()
-      }));
-  }
-  generateGridLayout();
 
   useEffect(() => {
     const handleFullscreenChange = () => {
