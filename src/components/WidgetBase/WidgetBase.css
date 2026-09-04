@@ -8,6 +8,7 @@
     flex-grow: 1;
     background-color: #F8F8F8;
     overflow: hidden;
+    min-height: 0;
 }
 .widget-content {
     flex: 1;

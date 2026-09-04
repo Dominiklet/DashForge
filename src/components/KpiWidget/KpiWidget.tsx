@@ -52,7 +52,7 @@ export function KpiWidget( {panel}: KpiWidgetProps) {
               minimumFractionDigits: kpiPanelConfiguration.fractionDigits,
               maximumFractionDigits: kpiPanelConfiguration.fractionDigits,
             })}
-            {kpiData?.unit && <span className="kpi-unit">{kpiData.unit}</span>}
+            {kpiData?.unit && <span className="kpi-unit" style={{color: textColor}}>{kpiData.unit}</span>}
           </span>
         )}
         {kpiPanelConfiguration.defaultTextPosition === "bottom" && label && (

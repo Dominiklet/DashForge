@@ -167,7 +167,7 @@ public class TimeDataSimulator {
                 lastPoint.get("timestamp").asLong();
 
         long nextTimestamp =
-                lastTimestamp + 5 * 60 * 1000L;
+                lastTimestamp + 10 * 60 * 1000L;
 
         ObjectNode newPoint =
                 dataArray.addObject();

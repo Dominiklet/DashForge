@@ -2,8 +2,9 @@ import "../App.css";
 import {BsBarChartLine, BsFullscreen, BsFullscreenExit} from "react-icons/bs";
 import {useEffect, useState} from "react";
 import type {Layout, Panel} from "../types/layout.ts";
+
 import {ReactGridLayout, useContainerWidth} from "react-grid-layout";
-import {WidgetBase} from "./WidgetBase.tsx";
+import {WidgetBase} from "./WidgetBase/WidgetBase.tsx";
 
 export interface DashboardInterface {
   layout: Layout;
@@ -75,9 +76,18 @@ export function Dashboard(dashboardInterface: DashboardInterface) {
       width={width}
       gridConfig={{cols: col, rowHeight: width / col / 2}}>
       {panels.map(panel =>
-        <div key={panel.id} data-grid={getGrid(panel)} >
-          <WidgetBase panel={panel}></WidgetBase>
-        </div>
+          <div
+              key={panel.id}
+              data-grid={getGrid(panel)}
+              style={{
+                  width: "100%",
+                  height: "100%",
+                  minHeight: 0,
+                  overflow: "hidden",
+              }}
+          >
+              <WidgetBase panel={panel} />
+          </div>
       )}
     </ReactGridLayout>
   </div>

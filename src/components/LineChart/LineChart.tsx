@@ -37,6 +37,7 @@ interface ResolvedAxis {
     useUnitOnAxis: boolean;
     useDefaultAxis: boolean;
     color: string;
+    index: number;
 }
 
 
@@ -184,11 +185,10 @@ function buildAxes(
                 id: yAxisId,
                 unit: metadata.unit,
                 orientation: "left",
-                useUnitOnAxis:
-                config.axisConfig.useUnitOnAxis,
-                useDefaultAxis:
-                config.axisConfig.useDefaultAxis,
+                useUnitOnAxis: config.axisConfig.useUnitOnAxis,
+                useDefaultAxis: config.axisConfig.useDefaultAxis,
                 color: config.lineConfig.color,
+                index: axes.size,
             });
         }
     );
@@ -293,7 +293,6 @@ export function LineChartWidget({
     const chartData = buildChartData(resolvedLines);
     const axes = buildAxes(resolvedLines);
 
-    //const hasData = chartData.length > 0;
 
 
     const visibleLegendConfig = resolvedLines.find(
@@ -313,19 +312,20 @@ export function LineChartWidget({
             style={{
                 width: "100%",
                 height: "100%",
+
             }}
         >
                 <ResponsiveContainer
                     width="100%"
-                    height={350}
+                    height="100%"
                 >
                     <LineChart
                         data={chartData}
                         margin={{
                             top: 20,
-                            right: 30,
+                            right: 20,
                             bottom: 20,
-                            left: 10,
+                            left: 0,
                         }}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
@@ -361,7 +361,8 @@ export function LineChartWidget({
                             <YAxis
                                 key={axis.id}
                                 yAxisId={axis.id}
-                                orientation={axis.orientation}
+                                orientation="left"
+                                width={70}
                                 domain={
                                     axis.useDefaultAxis
                                         ? [0, "auto"]
