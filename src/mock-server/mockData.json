@@ -2179,7 +2179,7 @@
     {
       "id": "593a9943-2484-4b62-bde2-05c9ced253bb",
       "value": 46.46,
-      "unit": "€/kWh"
+      "unit": "ct/kWh"
     },
     {
       "id": "012ac6e2-ab85-4c5f-8a84-b17e9cf3ef12",
@@ -3375,7 +3375,7 @@
     "8d40325d-41ff-4806-8bdc-deecbef9d523": {
       "id": "8d40325d-41ff-4806-8bdc-deecbef9d523",
       "name": "Strompreis",
-      "unit": "€/kWh",
+      "unit": "ct/kWh",
       "startDate": "2026-05-06T00:00:00.000000000Z",
       "endDate": "2026-05-11T00:00:00.000000000Z",
       "timeZone": "Europe/Berlin",

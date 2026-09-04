@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import type {Layout, Panel} from "../types/layout.ts";
 
 import {ReactGridLayout, useContainerWidth} from "react-grid-layout";
-import {WidgetBase} from "./WidgetBase.tsx";
+import {WidgetBase} from "./WidgetBase/WidgetBase.tsx";
 
 export interface DashboardInterface {
   layout: Layout;
